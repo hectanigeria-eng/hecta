@@ -20,6 +20,9 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# Cap the build's heap so it GCs under memory pressure instead of being
+# OOM-killed on a memory-constrained build host. Safe for hosts with >=2GB free.
+ENV NODE_OPTIONS=--max-old-space-size=2048
 RUN pnpm build
 
 # ---- Runner ----
