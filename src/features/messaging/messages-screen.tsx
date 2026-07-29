@@ -32,17 +32,22 @@ interface MessagesScreenProps {
    * reuse contract: it decides which threads belong to "me" and which
    * participant is rendered as the counterparty — everything else (layout,
    * selection, sending) is identical for both sides.
+   *
+   * Named `viewerRole` (not `role`) because Biome's a11y linter treats a
+   * `role` prop as an ARIA role attribute regardless of the component it
+   * belongs to.
    */
-  role: MessagingRole;
+  viewerRole: MessagingRole;
 }
 
 /**
  * Mounted at `/messages` for the seeker (Task 13) and `/dashboard/messages`
  * for the landlord (Task 15) — built once and reused verbatim. The active
  * thread is derived from the `?thread=` query param on whatever pathname
- * this happens to be rendered at, so the caller needs nothing beyond `role`.
+ * this happens to be rendered at, so the caller needs nothing beyond
+ * `viewerRole`.
  */
-export function MessagesScreen({ role }: MessagesScreenProps) {
+export function MessagesScreen({ viewerRole }: MessagesScreenProps) {
   const hydrated = useHydrated();
   const { user } = useSession();
   const pathname = usePathname();
@@ -54,8 +59,8 @@ export function MessagesScreen({ role }: MessagesScreenProps) {
   const listings = useHectaStore((state) => state.listings);
   const users = useHectaStore((state) => state.users);
 
-  const mySlot = role === "seeker" ? 0 : 1;
-  const counterpartySlot = role === "seeker" ? 1 : 0;
+  const mySlot = viewerRole === "seeker" ? 0 : 1;
+  const counterpartySlot = viewerRole === "seeker" ? 1 : 0;
 
   const summaries = useMemo<ThreadSummary[]>(() => {
     const mine = threads.filter(

@@ -22,8 +22,7 @@ export default function MessagesPage() {
             </div>
           }
         >
-          {/* biome-ignore lint/a11y/useValidAriaRole: MessagesScreen's `role` is a component prop ("seeker" | "landlord"), not an HTML/ARIA role attribute. */}
-          <MessagesScreen role="seeker" />
+          <MessagesScreen viewerRole="seeker" />
         </Suspense>
       </div>
     </div>
