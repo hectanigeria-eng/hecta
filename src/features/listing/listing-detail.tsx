@@ -8,7 +8,6 @@ import {
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,6 +17,7 @@ import { ActionBar } from "@/features/listing/action-bar";
 import { CostBreakdownCard } from "@/features/listing/cost-breakdown-card";
 import { Gallery } from "@/features/listing/gallery";
 import { LandlordCard } from "@/features/listing/landlord-card";
+import { ReportDialog } from "@/features/listing/report-dialog";
 import { SimilarListings } from "@/features/listing/similar-listings";
 import { SpecChips } from "@/features/listing/spec-chips";
 import { ListingMap } from "@/features/search/listing-map";
@@ -107,11 +107,13 @@ export function ListingDetail({ id }: ListingDetailProps) {
   // messaging a landlord only unlocks once the seeker has applied, so there
   // is no separate "contact" flow to build.
   const [applyOrigin, setApplyOrigin] = useState<"apply" | "contact">("apply");
+  const [reportOpen, setReportOpen] = useState(false);
 
-  // ─── Action handlers — Task 13 still owns handleReport. ────────────────
-  // Task 11 wraps all three below in the verification gate; Task 12 wires
-  // apply/contact to the real ApplyDialog. This remains the only place this
-  // page decides what an action does.
+  // ─── Action handlers ────────────────────────────────────────────────────
+  // Task 11 wraps all four below in the verification gate; Task 12 wired
+  // apply/contact to the real ApplyDialog and Task 13 wires report to the
+  // real ReportDialog. This remains the only place this page decides what
+  // an action does.
   function handleSave() {
     requireVerified(() => toggleSaved(id));
   }
@@ -128,7 +130,7 @@ export function ListingDetail({ id }: ListingDetailProps) {
     });
   }
   function handleReport() {
-    toast.info("Reporting a listing is coming in the next task.");
+    requireVerified(() => setReportOpen(true));
   }
   // ─── End action handlers ───────────────────────────────────────────────
 
@@ -172,6 +174,11 @@ export function ListingDetail({ id }: ListingDetailProps) {
         open={applyOpen}
         onOpenChange={setApplyOpen}
         origin={applyOrigin}
+      />
+      <ReportDialog
+        listing={listing}
+        open={reportOpen}
+        onOpenChange={setReportOpen}
       />
       <nav aria-label="Breadcrumb">
         <ol className="-my-3 flex list-none items-center gap-1 p-0 text-xs text-muted-ink">
