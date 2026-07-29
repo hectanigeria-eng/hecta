@@ -7,12 +7,13 @@ import {
   MapPinIcon,
 } from "@phosphor-icons/react";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { locationLabel } from "@/constants/locations";
+import { ApplyDialog } from "@/features/apply/apply-dialog";
 import { ActionBar } from "@/features/listing/action-bar";
 import { CostBreakdownCard } from "@/features/listing/cost-breakdown-card";
 import { Gallery } from "@/features/listing/gallery";
@@ -101,27 +102,35 @@ export function ListingDetail({ id }: ListingDetailProps) {
 
   const { requireVerified, gateOpen, setGateOpen } = useGate();
 
-  // ─── Temporary action handlers — Tasks 12–13 replace this block ───────
-  // Task 11 wraps all three in the verification gate, Task 12 wires the real
-  // apply flow, Task 13 opens the report dialog. They are deliberately the
-  // only place this page decides what an action does.
+  const [applyOpen, setApplyOpen] = useState(false);
+  // Contact reuses the apply dialog with different copy — per PRD AP-04,
+  // messaging a landlord only unlocks once the seeker has applied, so there
+  // is no separate "contact" flow to build.
+  const [applyOrigin, setApplyOrigin] = useState<"apply" | "contact">("apply");
+
+  // ─── Action handlers — Task 13 still owns handleReport. ────────────────
+  // Task 11 wraps all three below in the verification gate; Task 12 wires
+  // apply/contact to the real ApplyDialog. This remains the only place this
+  // page decides what an action does.
   function handleSave() {
     requireVerified(() => toggleSaved(id));
   }
   function handleApply() {
-    requireVerified(() =>
-      toast.info("Applying for a home is coming in the next task."),
-    );
+    requireVerified(() => {
+      setApplyOrigin("apply");
+      setApplyOpen(true);
+    });
   }
   function handleContact() {
-    requireVerified(() =>
-      toast.info("Messaging the landlord is coming in the next task."),
-    );
+    requireVerified(() => {
+      setApplyOrigin("contact");
+      setApplyOpen(true);
+    });
   }
   function handleReport() {
     toast.info("Reporting a listing is coming in the next task.");
   }
-  // ─── End temporary action handlers ────────────────────────────────────
+  // ─── End action handlers ───────────────────────────────────────────────
 
   if (!hydrated) {
     return <ListingDetailSkeleton />;
@@ -158,6 +167,12 @@ export function ListingDetail({ id }: ListingDetailProps) {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6">
       <GateDialog open={gateOpen} onOpenChange={setGateOpen} />
+      <ApplyDialog
+        listing={listing}
+        open={applyOpen}
+        onOpenChange={setApplyOpen}
+        origin={applyOrigin}
+      />
       <nav aria-label="Breadcrumb">
         <ol className="-my-3 flex list-none items-center gap-1 p-0 text-xs text-muted-ink">
           <li>
