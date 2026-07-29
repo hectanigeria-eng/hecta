@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { cityBySlug, stateBySlug } from "@/constants/locations";
 import { SearchEntry } from "@/features/search/search-entry";
-import { filterListings } from "@/lib/marketplace";
-import { MOCK_LISTINGS } from "@/lib/mock";
+import { SearchResults } from "@/features/search/search-results";
 import { parseSearchParams } from "@/lib/search-params";
 
 export const metadata: Metadata = {
@@ -22,23 +22,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     return <SearchEntry query={query} />;
   }
 
-  // Temporary placeholder — Task 8 replaces this entire branch with the real
-  // results view (cards, filters, map) built on this same `filterListings`
-  // call. Keep this to a single count element; do not add layout here.
-  const matches = filterListings(MOCK_LISTINGS, {
-    intent: query.intent,
-    state: query.state,
-    cityLga: query.city,
-    areas: query.areas,
-    verifiedOnly: query.verifiedOnly,
-  });
+  // Results themselves render client-side (they read the Zustand store so
+  // later admin/landlord status changes are reflected), so the crawlable,
+  // server-rendered page heading lives here rather than in SearchResults —
+  // which keeps its own headings at <h2> and below.
+  const cityLabel = cityBySlug(query.state ?? "", query.city ?? "")?.label;
+  const stateLabel = stateBySlug(query.state ?? "")?.label;
+  const place = [cityLabel, stateLabel].filter(Boolean).join(", ");
 
   return (
-    <section className="mx-auto max-w-2xl px-4 py-16 text-center">
-      <p className="text-lg text-ink" data-testid="results-count-placeholder">
-        {matches.length} {matches.length === 1 ? "home" : "homes"} match your
-        search.
-      </p>
-    </section>
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <h1 className="sr-only">
+        Homes to {query.intent === "rent" ? "rent" : "buy"}
+        {place ? ` in ${place}` : ""}
+      </h1>
+      <SearchResults query={query} />
+    </div>
   );
 }
