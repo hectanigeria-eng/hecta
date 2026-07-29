@@ -10,6 +10,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -292,14 +293,14 @@ function ApplicationRow({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-sm font-semibold text-ink">{applicantName}</p>
-              <span
+              <Badge
                 className={cn(
-                  "rounded-full px-2.5 py-1 text-[0.625rem] font-semibold tracking-wide uppercase",
+                  "rounded-full px-2.5 py-1 text-xs font-semibold tracking-normal normal-case",
                   tier.className,
                 )}
               >
                 {tier.label}
-              </span>
+              </Badge>
             </div>
             <StatusChip status={application.status} />
           </div>

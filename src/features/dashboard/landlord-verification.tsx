@@ -181,9 +181,9 @@ export function LandlordVerification() {
   const latest = mySubmissions[0];
 
   if (isLandlordVerified) {
-    const approved =
-      mySubmissions.find((submission) => submission.status === "approved") ??
-      latest;
+    const approved = mySubmissions.find(
+      (submission) => submission.status === "approved",
+    );
     return <ApprovedStatusCard submission={approved} />;
   }
 
@@ -236,6 +236,14 @@ function ApprovedStatusCard({
 }: {
   submission: VerificationSubmission | undefined;
 }) {
+  // Guards against misreporting even if a caller ever passes something other
+  // than an approved submission (e.g. `landlordVerified` and the submission
+  // list momentarily disagreeing, as they can once Task 18's admin console
+  // starts changing statuses) — only a submission whose own status is
+  // "approved" gets to claim an approval date.
+  const approvedSubmission =
+    submission?.status === "approved" ? submission : undefined;
+
   return (
     <Card className="rounded-3xl bg-primary-50 ring-1 ring-primary-200">
       <CardContent className="flex flex-col gap-5">
@@ -254,21 +262,21 @@ function ApprovedStatusCard({
             </p>
           </div>
         </div>
-        {submission !== undefined && (
+        {approvedSubmission !== undefined && (
           <dl className="grid gap-4 border-t border-primary-200 pt-5 sm:grid-cols-3">
             <SummaryField
               label="Ownership document"
-              value={OWNERSHIP_DOC_LABEL[submission.ownershipDocType]}
+              value={OWNERSHIP_DOC_LABEL[approvedSubmission.ownershipDocType]}
               tone="primary"
             />
             <SummaryField
               label="Property address"
-              value={submission.propertyAddress}
+              value={approvedSubmission.propertyAddress}
               tone="primary"
             />
             <SummaryField
               label="Approved"
-              value={formatDate(submission.submittedAt)}
+              value={formatDate(approvedSubmission.submittedAt)}
               tone="primary"
             />
           </dl>
@@ -725,25 +733,22 @@ function OwnershipStep({
                   </label>
                 );
               })}
-            </RadioGroup>
 
-            <div className="flex flex-col gap-1 border-t border-border pt-4">
-              <p className="text-sm font-semibold text-ink normal-case">
-                Family land?
-              </p>
-              <p className="text-xs text-muted-ink normal-case">
-                A meaningful share of Lagos property is held under family or
-                inherited title rather than a registered C of O — this path is a
-                legitimate, equally valid way to verify, not a fallback.
-              </p>
-            </div>
+              {/* Same RadioGroup (not a second one) — the family-land docs are
+               * arrow-key reachable from the standard docs above, not a
+               * separately-tabbed cluster. Only the divider + heading below
+               * are non-item content sitting inside the group. */}
+              <div className="flex flex-col gap-1 border-t border-border pt-4">
+                <p className="text-sm font-semibold text-ink normal-case">
+                  Family land?
+                </p>
+                <p className="text-xs text-muted-ink normal-case">
+                  A meaningful share of Lagos property is held under family or
+                  inherited title rather than a registered C of O — this path is
+                  a legitimate, equally valid way to verify, not a fallback.
+                </p>
+              </div>
 
-            <RadioGroup
-              value={field.value}
-              onValueChange={(value) => {
-                field.onChange(handleDocTypeChange(value));
-              }}
-            >
               {FAMILY_DOC_TYPES.map((doc) => {
                 const optionId = `${fieldId}-doc-${doc}`;
                 const isActive = field.value === doc;
