@@ -1,3 +1,5 @@
+import type { GeoPoint } from "@/lib/types";
+
 export interface AreaDef {
   slug: string;
   label: string;
@@ -85,6 +87,37 @@ export const NIGERIA_LOCATIONS: StateDef[] = [
     ],
   },
 ];
+
+// Approximate real-world centroid per area slug, used as the base point for
+// each listing's `geoPoint` (jittered per-listing so pins don't stack).
+export const AREA_COORDS: Record<string, GeoPoint> = {
+  // Lagos — Eti-Osa
+  "lekki-phase-1": { lat: 6.4404, lng: 3.4698 },
+  ikate: { lat: 6.443, lng: 3.52 },
+  vi: { lat: 6.4281, lng: 3.4219 },
+  ikoyi: { lat: 6.45, lng: 3.4333 },
+  ajah: { lat: 6.4698, lng: 3.5852 },
+  oniru: { lat: 6.435, lng: 3.445 },
+  // Lagos — Ikeja
+  "gra-ikeja": { lat: 6.5833, lng: 3.35 },
+  opebi: { lat: 6.59, lng: 3.36 },
+  allen: { lat: 6.6018, lng: 3.3515 },
+  // Lagos — Yaba
+  akoka: { lat: 6.5167, lng: 3.3833 },
+  alagomeji: { lat: 6.5027, lng: 3.3819 },
+  sabo: { lat: 6.51, lng: 3.38 },
+  // Lagos — Surulere
+  "adeniran-ogunsanya": { lat: 6.4933, lng: 3.355 },
+  "bode-thomas": { lat: 6.498, lng: 3.36 },
+  // Lagos — Kosofe
+  gbagada: { lat: 6.558, lng: 3.389 },
+  ogudu: { lat: 6.562, lng: 3.396 },
+  // Abuja — AMAC
+  "wuse-2": { lat: 9.0765, lng: 7.477 },
+  maitama: { lat: 9.09, lng: 7.495 },
+  gwarinpa: { lat: 9.11, lng: 7.41 },
+  jabi: { lat: 9.0765, lng: 7.423 },
+};
 
 export function stateBySlug(slug: string): StateDef | undefined {
   return NIGERIA_LOCATIONS.find((state) => state.slug === slug);
