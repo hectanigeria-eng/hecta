@@ -360,7 +360,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Security", "Air conditioning", "Elevator"],
     description:
-      "Sleek 1-bedroom apartment on Adeola Odeku, within walking distance of the main VI business corridor. Elevator access, split-unit air conditioning in every room, and a fully fitted kitchenette. Ideal for a young executive who needs to be close to the banks and corporate HQs on the Island.",
+      "This sleek 1-bedroom apartment sits on the third floor of a modern block on Adeola Odeku Street, within walking distance of Victoria Island's main business corridor. The open-plan living and dining area leads onto a small balcony, and the bedroom has fitted wardrobes plus its own bathroom. Being fully serviced, the charge covers a dedicated generator that runs around the clock, borehole water through an on-site treatment plant, and lift maintenance, so day-to-day upkeep is minimal. Split-unit air conditioning cools every room, and the fitted kitchenette suits a busy professional who still wants to cook occasionally. A good fit for a young executive who needs to be a short walk from the banks and corporate headquarters that line the Island.",
     images: photosFor(6),
     status: "active",
     verifiedProperty: true,
@@ -398,7 +398,7 @@ export const MOCK_LISTINGS: Listing[] = [
       "Wardrobe",
     ],
     description:
-      "Exquisite 4-bedroom detached house off Bourdillon Road, one of Ikoyi's most prestigious addresses. Private swimming pool, staff quarters, and parking for six vehicles behind an automated gate. Sold with governor's consent in progress; title documents available for review. A rare outright-sale opportunity in this axis.",
+      "This exquisite 4-bedroom detached house sits just off Bourdillon Road, one of Ikoyi's most prestigious addresses, on a generous plot with a private swimming pool and a separate staff quarters block. Each bedroom is en-suite, and the reception rooms come semi-furnished with quality fixtures left behind by the outgoing owner, though there is no service charge since the house isn't part of a managed estate. A 33kVA standby generator backs up the Band A power feed, and a borehole with its own treatment plant supplies clean water independent of the public network. Parking is available for up to six vehicles behind an automated gate manned by private security. Sold with governor's consent already in progress and full title documents available for review, this is a rare outright-sale opportunity in one of Lagos's most sought-after streets.",
     images: photosFor(7),
     status: "active",
     verifiedProperty: true,
@@ -428,7 +428,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Not applicable — vacant land",
     amenities: ["Security", "Estate/gated", "Borehole"],
     description:
-      "Dry, fenced plot of land measuring 650 square metres inside a registered estate near Abraham Adesanya, Ajah. Survey plan and deed of assignment available. Estate has perimeter fencing and a security post at the entrance, with a communal borehole already drilled. Suitable for immediate development.",
+      "This dry, fenced plot of land measures 650 square metres inside a registered estate near Abraham Adesanya, Ajah, on relatively high ground that stays clear of the seasonal flooding some nearby streets experience. The survey plan and deed of assignment are both available for inspection, and the estate's perimeter fencing plus a manned security post at the entrance give early buyers peace of mind before they start building. A communal borehole has already been drilled and connected to a shared distribution line, so a future development won't need to sink its own well immediately. There is no existing structure, so the usual power and water questions don't apply until construction begins. Suitable for immediate development, whether a private home or a small block of flats, and close enough to the Lekki-Epe corridor for an easy commute.",
     images: photosFor(8),
     status: "active",
     verifiedProperty: true,
@@ -459,7 +459,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Generator", "Parking", "Security", "Fitted kitchen"],
     description:
-      "Newly refurbished 2-bedroom flat on Opebi Link Road with fresh paint, new tiles, and a fitted kitchen. Good natural light, en-suite master bedroom, and secure compound parking. Close to Opebi's restaurants and a short drive to the Ikeja business district.",
+      "This newly refurbished 2-bedroom flat sits on the second floor of a small block on Opebi Link Road, freshly painted with new floor tiles and a semi-fitted kitchen that includes base cabinets and a sink but leaves room for the tenant's own appliances. Good natural light fills the living room through wide windows, and the master bedroom is en-suite. The modest service charge covers a shared estate generator that keeps the compound running during outages, while a borehole supplies water to every unit. Secure compound parking is available for one car per flat. Being on Opebi Link Road puts tenants within walking distance of the area's many restaurants and a short drive from the Ikeja business district, making it a convenient base for anyone working around Allen Avenue or Awolowo Way.",
     images: photosFor(9),
     status: "active",
     verifiedProperty: true,
@@ -490,7 +490,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole + overhead tank",
     amenities: ["Parking", "Security", "Borehole"],
     description:
-      "Roomy 3-bedroom bungalow in a shared compound just off Allen Avenue. Independent entrance, private parking for one car, and a small backyard. Landlord lives off-site; a resident caretaker manages the compound. Walking distance to Allen's shopping strip and the Ikeja bus terminal.",
+      "This roomy 3-bedroom bungalow occupies one wing of a shared compound just off Allen Avenue, with its own independent entrance so tenants don't pass through a shared hallway. The unfurnished rooms are large enough to fit a tenant's own furniture comfortably, and there's a small backyard suitable for a dog or two since pets are welcome here. Power comes from PHCN with moderate, fairly predictable supply, and a borehole with an overhead tank handles water needs without relying on the public mains. The landlord lives off-site, but a resident caretaker manages day-to-day compound issues and keeps an eye on the single private parking space out front. Being just off Allen Avenue means an easy walk to the area's busy shopping strip and the Ikeja bus terminal, handy for anyone commuting across the mainland.",
     images: photosFor(10),
     status: "active",
     verifiedProperty: true,
@@ -521,7 +521,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Parking", "Security", "POP ceiling"],
     description:
-      "Simple 2-bedroom flat in the heart of Sabo, Yaba — close to the market and the Costain-bound bus stops. Tiled throughout with a POP ceiling in the living room. Fenced compound with gate security. Good value for the Yaba mainland axis.",
+      "This simple 2-bedroom flat sits on the first floor of a modest block in the heart of Sabo, Yaba, close to the market and the Costain-bound bus stops that make commuting straightforward. Floors are tiled throughout and the living room has a POP ceiling, but the unit is unfurnished, so tenants bring their own furniture and appliances. There's no service charge here — power comes from the regular PHCN feed with no shared generator, and water is drawn from a borehole serving the compound. The fenced compound has gate security on duty, giving a basic but reassuring level of safety for the price. Good value for the Yaba mainland axis, and well placed for anyone who needs quick access to Herbert Macaulay Way or the university side of the neighbourhood without paying Lekki-level rent.",
     images: photosFor(11),
     status: "active",
     verifiedProperty: true,
@@ -552,7 +552,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Generator", "Parking", "Security", "Fitted kitchen"],
     description:
-      "Freshly renovated 2-bedroom flat on Adeniran Ogunsanya Street, right in the middle of Surulere's busiest shopping strip. Fitted kitchen cabinets, new plumbing, and shared compound generator. Walking distance to National Stadium and Barracks bus stop.",
+      "This freshly renovated 2-bedroom flat sits on the second floor of a building right on Adeniran Ogunsanya Street, in the middle of Surulere's busiest shopping strip. The kitchen has new cabinets fitted during the recent renovation, and the plumbing throughout the unit has been replaced, though the rest of the flat is only semi-furnished with basic curtain rails and light fittings left in place. There's no dedicated service charge, but the compound shares a generator that residents contribute to informally when PHCN supply is unreliable, and a borehole covers water needs. Walking distance to National Stadium and the Barracks bus stop makes this a practical choice for anyone who needs to move around the mainland quickly, and the street-level shops mean groceries and everyday errands are always close at hand.",
     images: photosFor(12),
     status: "active",
     verifiedProperty: true,
@@ -583,7 +583,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Generator", "Security", "Air conditioning", "Wardrobe"],
     description:
-      "Fully furnished 2-bedroom flat on Bode Thomas, available on a short-term lease. Air conditioning in both bedrooms, fitted wardrobes, and a small sit-out balcony. Close to the many eateries and shops along Bode Thomas Street, and a quick drive to Costain.",
+      "This fully furnished 2-bedroom flat on Bode Thomas Street is available on a short-term lease, making it a good option for anyone who isn't ready to commit to a full year. Air conditioning units are fitted in both bedrooms, wardrobes are built in throughout, and a small sit-out balcony catches the evening breeze. The semi-service arrangement covers a shared estate generator that comes on during outages, while water is supplied from a borehole feeding the block. Being on Bode Thomas puts tenants close to the many eateries, salons, and shops that line the street, and it's only a quick drive to Costain and the mainland bridges. A practical, low-commitment option for a single professional or a couple relocating to Surulere without wanting to buy furniture immediately.",
     images: photosFor(13),
     status: "active",
     verifiedProperty: true,
@@ -614,7 +614,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole + overhead tank",
     amenities: ["Generator", "Parking", "Security", "Estate/gated"],
     description:
-      "3-bedroom duplex inside a quiet gated estate in Gbagada, close to the Oworonshoki riverside. Large compound with parking for two cars and a small garden. Family-friendly, pet-friendly street with an estate security team. Easy access to the Third Mainland Bridge and Gbagada Expressway.",
+      "This 3-bedroom duplex sits inside a quiet gated estate in Gbagada, close enough to the Oworonshoki riverside to catch a breeze in the evenings. The compound is large enough for two cars to park comfortably, and there's a small garden strip along one side of the house. Unfurnished throughout, the duplex gives incoming tenants a blank slate to bring their own furniture, and pets are welcome on this family-friendly street. Power comes from PHCN topped up by an 8kVA generator that the landlord maintains, while a borehole with an overhead tank handles the water supply. The estate runs its own security team at the gate. Easy access to the Third Mainland Bridge and the Gbagada Expressway makes this a sensible base for anyone commuting to the Island or further into the mainland.",
     images: photosFor(14),
     status: "active",
     verifiedProperty: true,
@@ -645,7 +645,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Parking", "Security", "Estate/gated", "Borehole"],
     description:
-      "Well-maintained 3-bedroom bungalow in Ogudu GRA Phase 2, a fully gated, tarred estate with round-the-clock security. Semi-fitted kitchen, private borehole supply, and parking space for two cars. Quiet, family-oriented neighbourhood close to Ojota and the Lagos-Ibadan expressway link.",
+      "This well-maintained 3-bedroom bungalow sits inside Ogudu GRA Phase 2, a fully gated and tarred estate with round-the-clock security at the main entrance. The kitchen is semi-fitted with base cabinets and a cooker point, while the rest of the house comes with basic light fittings and curtain rails but no furniture. The modest service charge covers estate-wide generator backup on top of the Band A power feed, and a private borehole with its own treatment plant supplies clean water directly to the house. Parking space for two cars sits behind the compound's low wall. This is a quiet, family-oriented neighbourhood close to Ojota and the Lagos-Ibadan expressway link, useful for anyone who needs quick access to the mainland's major arterial roads without living directly on a busy street.",
     images: photosFor(15),
     status: "active",
     verifiedProperty: true,
@@ -683,7 +683,7 @@ export const MOCK_LISTINGS: Listing[] = [
       "Estate/gated",
     ],
     description:
-      "Grand 5-bedroom mansion on Aguiyi Ironsi Street in the Maitama diplomatic zone, sold with C of O. Home cinema, private gym, and an outdoor pool, all behind a fully staffed, gated compound. A statement residence for a senior executive or diplomatic family relocating to Abuja.",
+      "This grand 5-bedroom mansion sits on Aguiyi Ironsi Street in the heart of Maitama's diplomatic zone, sold fully furnished right down to the home cinema seating and the equipment in the private gym. An outdoor pool anchors the rear garden, and every bedroom is en-suite with its own dressing area. Because the sale doesn't include ongoing estate service, the buyer inherits a 60kVA standby generator that backs up the Band A power feed, along with a borehole and treatment plant that keeps the household's water supply independent of the mains. The compound is fully staffed and gated, with round-the-clock security already in place. Sold with C of O in hand, this is a statement residence built for a senior executive or a diplomatic family relocating to Abuja who wants everything ready from day one.",
     images: photosFor(16),
     status: "active",
     verifiedProperty: true,
@@ -720,7 +720,7 @@ export const MOCK_LISTINGS: Listing[] = [
       "Fitted kitchen",
     ],
     description:
-      "Well-appointed 2-bedroom serviced apartment on Aminu Kano Crescent, Wuse 2, Abuja's premier commercial strip. Elevator access, constant power, and a fully fitted kitchen. Service charge covers cleaning, refuse disposal, and generator diesel. Steps from banks, embassies, and shopping malls.",
+      "This well-appointed 2-bedroom serviced apartment sits on the third floor of a building on Aminu Kano Crescent, right in the middle of Wuse 2, Abuja's premier commercial strip. Both bedrooms are furnished with built-in wardrobes, and the living area opens onto a small private balcony overlooking the crescent. The full service charge covers a generator that keeps the building powered 24/7, borehole water piped through an in-house treatment plant, lift maintenance, cleaning of common areas, and refuse disposal, so tenants only need to worry about their own unit. The fully fitted kitchen comes with a gas cooker and extractor hood already installed. Being steps from the banks, embassies, and shopping malls that define this axis makes it an easy choice for a diplomat, contractor, or executive who needs a turnkey base in central Abuja.",
     images: photosFor(17),
     status: "active",
     verifiedProperty: true,
@@ -750,7 +750,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Not applicable — vacant land",
     amenities: ["Security", "Estate/gated", "Borehole"],
     description:
-      "Half-plot of registered residential land on 3rd Avenue, Gwarinpa — one of Abuja's largest planned estates. Fenced and gravelled, with an existing borehole and access road. C of O in the seller's name, ready for immediate transfer and development.",
+      "This half-plot of registered residential land sits on 3rd Avenue in Gwarinpa, one of Abuja's largest planned estates, already fenced and gravelled with a graded access road running up to the boundary. An existing borehole on the plot means a buyer won't need to drill immediately, and the C of O is in the seller's name and ready for a straightforward transfer. There's no building on site yet, so there are no power or water arrangements beyond the borehole itself, and no service charge applies. A security post at the estate's main entrance covers the wider neighbourhood. Ready for immediate development, whether that's a family home or a small rental block, and close enough to the Kubwa Expressway and the rest of Gwarinpa's amenities to make construction logistics straightforward for a buyer starting from scratch.",
     images: photosFor(18),
     status: "active",
     verifiedProperty: true,
@@ -781,7 +781,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Generator", "Parking", "Security", "Fitted kitchen"],
     description:
-      "Modern 3-bedroom terrace house close to Jabi Lake Mall, with smart door locks and a fitted kitchen. Estate has tarred internal roads, a generator that covers common areas, and gated security. Short drive to Jabi Motor Park and the Airport Road.",
+      "This modern 3-bedroom terrace house sits a short walk from Jabi Lake Mall, fitted with smart door locks on the main entrance and a semi-fitted kitchen that includes cabinets and a cooker point but leaves room for the tenant's own fridge and microwave. The estate's tarred internal roads make it easy to drive straight to the door, and the modest service charge covers a generator that keeps common areas and street lighting running during outages, on top of the Band A feed most units already enjoy. A borehole supplies water to the whole terrace block. Gated security controls access at the estate entrance around the clock. Being a short drive from Jabi Motor Park and the Airport Road makes this a convenient base for anyone who travels often or commutes into the Central Business District.",
     images: photosFor(19),
     status: "active",
     verifiedProperty: true,
@@ -812,7 +812,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Parking", "Security", "POP ceiling"],
     description:
-      "Plain, well-priced 2-bedroom flat off Bode Alalade Street, Akoka. Tiled floors and a POP ceiling in the sitting room. Fenced compound with a gateman on duty. A short walk to UNILAG and the Akoka bus stop, popular with staff and postgraduate tenants.",
+      "This plain, well-priced 2-bedroom flat sits on the first floor of a compound off Bode Alalade Street in Akoka, a short walk from UNILAG's back gate and the busy Akoka bus stop. Floors are tiled and the sitting room has a simple POP ceiling, but the unit is unfurnished and comes with standard fittings rather than anything upgraded. There's no shared generator or service charge here — power runs on the regular PHCN feed, and a borehole in the compound supplies water to every flat. A gateman is on duty at the fenced entrance, offering a basic level of security for the price point. Popular with university staff and postgraduate tenants who want to be close to campus without paying the premium that comes with more polished finishes further into Yaba.",
     images: photosFor(20),
     status: "active",
     verifiedProperty: true,
@@ -843,7 +843,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Parking", "Security", "Fitted kitchen"],
     description:
-      "Cozy semi-furnished 2-bedroom flat on Bank Road, Alagomeji, with a fitted kitchen and reasonable natural light. Compound shares a small generator for evening hours. Close to Yaba tech offices, Herbert Macaulay Way, and the Iwaya waterfront.",
+      "This cozy 2-bedroom flat sits on the second floor of a building on Bank Road, Alagomeji, with reasonable natural light coming through windows on two sides of the living room. The kitchen is semi-furnished with fitted cabinets already in place, though the rest of the unit is left for the tenant to furnish. There's no formal service charge, but the compound informally shares a small generator that residents contribute toward during evening outages, and a borehole covers water needs when the public supply is unreliable. The building sits within easy reach of Yaba's growing cluster of tech offices, Herbert Macaulay Way, and the Iwaya waterfront, making it a reasonable option for young professionals who want to be close to work without the cost of Victoria Island or Ikoyi rents.",
     images: photosFor(21),
     status: "active",
     verifiedProperty: true,
@@ -874,7 +874,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Parking", "Security", "Pool", "Gym", "Elevator"],
     description:
-      "Elegant 2-bedroom condo on Freedom Way, Lekki Phase 1, with partial sea views from the fifth floor. Building amenities include a rooftop pool, gym, elevators, and 24-hour power. Sold with deed of assignment; ideal as a primary residence or a high-yield short-let investment.",
+      "This elegant 2-bedroom condo sits on the fifth floor of a building on Freedom Way in Lekki Phase 1, with partial sea views from the living room and main bedroom on clear days. The unit comes fully furnished, right down to the dining set and the wardrobes in both bedrooms, so a buyer can move in without shopping for basics. Building amenities included in the full service charge cover a rooftop pool, a small gym, elevator maintenance, and 24-hour power from a dedicated building generator, alongside borehole water run through an in-house treatment plant. Sold with deed of assignment in hand, this makes sense either as a primary residence for someone who wants resort-style amenities on-site, or as a high-yield short-let investment given how popular this stretch of Lekki Phase 1 is with visitors.",
     images: photosFor(22),
     status: "active",
     verifiedProperty: true,
@@ -911,7 +911,7 @@ export const MOCK_LISTINGS: Listing[] = [
       "Fitted kitchen",
     ],
     description:
-      "Executive 4-bedroom semi-detached house on Isaac John Street, Ikeja GRA. Fitted kitchen, boys' quarters, and parking for three cars behind a gated fence. Well-suited for a growing family; survey plan and governor's consent documents are ready for a smooth handover.",
+      "This executive 4-bedroom semi-detached house sits on Isaac John Street in Ikeja GRA, on a plot large enough to fit three cars behind its gated fence. The kitchen is semi-fitted with cabinets and worktops already installed, and a boys' quarters at the rear gives extra space for staff or storage. Because there's no ongoing estate service charge, the new owner takes on a 15kVA generator that backs up the Band A feeder already connected to the property, plus a borehole and overhead tank for water independent of the mains. Pets are welcome on this quiet, tree-lined street. Well-suited for a growing family that wants space without leaving the Ikeja GRA neighbourhood, and with survey plan and governor's consent documents already prepared, the handover process should move quickly once a buyer is confirmed.",
     images: photosFor(23),
     status: "active",
     verifiedProperty: true,
@@ -942,7 +942,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Parking", "Security", "Pool", "Estate/gated"],
     description:
-      "Large 4-bedroom detached house on Queens Drive, Ikoyi, with a private pool and a well-tended garden. Fully furnished to a high standard, with a live-in generator technician included in the service charge. Gated street with private estate security. Pets are welcome.",
+      "This large 4-bedroom detached house sits on Queens Drive in Ikoyi, with a private pool and a well-tended garden that wraps around one side of the compound. Every room comes fully furnished to a high standard, from the living room sofas to the wardrobes built into each bedroom. The full service charge is unusually generous, including a live-in generator technician who keeps the estate's power running smoothly around the clock, on top of borehole water treated on-site. The gated street runs its own private estate security separate from the house's own gateman. Pets are welcome, making this a comfortable choice for a family that doesn't want to compromise on space or finishes. Being on Queens Drive keeps residents close to the quieter, more residential side of Ikoyi while still a short drive from the VI business district.",
     images: photosFor(24),
     status: "active",
     verifiedProperty: true,
@@ -973,7 +973,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Security", "Air conditioning", "Elevator"],
     description:
-      "Fully furnished studio on Ozumba Mbadiwe Avenue, ideal for a short-term corporate stay on Victoria Island. Elevator access, constant power, and daily housekeeping available on request. Walking distance to the major banks and the Falomo bridge into Ikoyi.",
+      "This fully furnished studio sits on the second floor of a building on Ozumba Mbadiwe Avenue, ideal for a short-term corporate stay on Victoria Island without the commitment of a full-year lease. The single open room combines a sleeping area, a small sitting corner, and a compact kitchenette, all finished to a comfortable standard. Elevator access makes moving luggage in and out simple, and the full service charge covers constant power from the building's generator, borehole water, and daily housekeeping available on request for an additional fee. There's no dedicated parking bay, but street parking is generally manageable outside peak hours. Walking distance to the major banks on the Island and a short stroll across the Falomo bridge into Ikoyi make this a practical base for consultants, expatriates, or anyone in Lagos on a short assignment.",
     images: photosFor(25),
     status: "active",
     verifiedProperty: true,
@@ -1004,7 +1004,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole + overhead tank",
     amenities: ["Parking", "Security", "Borehole", "Estate/gated"],
     description:
-      "Comfortable 3-bedroom bungalow on 7th Avenue, Gwarinpa, with a fenced yard big enough for pets to roam. Private borehole, ample parking, and a quiet, family-oriented street inside the estate. Close to Gwarinpa's shopping strip and the Kubwa Expressway.",
+      "This comfortable 3-bedroom bungalow sits on 7th Avenue in Gwarinpa, with a fenced yard large enough for pets to roam freely, which is exactly why the landlord markets it as pet-friendly. The rooms are unfurnished, giving tenants a blank canvas, though the kitchen has basic cabinetry already fitted. There's no shared service charge — the house relies on the regular Band A power feeder without a backup generator, so tenants should expect the occasional short outage, and a borehole with an overhead tank covers water needs independently of the mains. Ample parking space sits inside the fenced compound. This is a quiet, family-oriented street inside one of Abuja's most established estates, close to Gwarinpa's own shopping strip and not far from the Kubwa Expressway for anyone who needs to travel further into the city centre.",
     images: photosFor(26),
     status: "active",
     verifiedProperty: true,
@@ -1035,7 +1035,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole",
     amenities: ["Parking", "Security", "Borehole"],
     description:
-      "Budget-friendly self-contain off Addo Road, Ajah — a good starter home for a single tenant. Basic tiled finish with a private toilet and bathroom. Fenced compound with a gateman and a communal borehole. Close to the Ajah bus stop and Ajah market.",
+      "This budget-friendly self-contain sits off Addo Road in Ajah, a good starter home for a single tenant who mainly needs a private toilet and bathroom rather than a full flat. The finish is basic — tiled floors, plain walls, and simple fittings — but everything is functional and recently repainted. There's no service charge here; power comes from the standard PHCN supply with no shared generator, and a communal borehole in the compound handles water for all the units on the plot. The fenced compound has a gateman who keeps an eye on comings and goings, offering a reasonable level of security for the price. Being close to the Ajah bus stop and Ajah market makes daily errands and transport easy, making this a sensible entry point into the Ajah rental market for someone just starting out on their own.",
     images: photosFor(27),
     status: "active",
     verifiedProperty: true,
@@ -1072,7 +1072,7 @@ export const MOCK_LISTINGS: Listing[] = [
       "Parking",
     ],
     description:
-      "Grade-A open-plan office suite on Adetokunbo Ademola Crescent, Wuse 2. Central air conditioning, elevator access, and reserved parking for staff and visitors. Building generator covers business hours and after-hours access is available. Prime location for a professional services firm.",
+      "This Grade-A open-plan office suite sits on the second floor of a building on Adetokunbo Ademola Crescent, right in the middle of Wuse 2's commercial district. The unfurnished space is left open for a tenant to fit out with their own partitions and furniture, though the shell already includes central air conditioning ducting and finished flooring. The semi-service arrangement covers a shared generator that keeps the building powered through business hours, and after-hours access can be arranged directly with the building manager for teams that work late. Water comes from a borehole serving the whole building. Elevator access and reserved parking bays for staff and visiting clients round out the practical features. A prime location for a professional services firm, law practice, or consultancy that wants a recognisable Wuse 2 address without the overhead of building its own facility.",
     images: photosFor(28),
     status: "active",
     verifiedProperty: true,
@@ -1103,7 +1103,7 @@ export const MOCK_LISTINGS: Listing[] = [
     waterSupply: "Borehole with treatment plant",
     amenities: ["Generator", "Parking", "Security", "Fitted kitchen"],
     description:
-      "Brand-new 3-bedroom terrace house in a fresh Jabi District development, never previously occupied. Fully furnished living areas, fitted kitchen, and estate-wide generator backup. A few minutes from Jabi Lake Mall and the Central Business District.",
+      "This brand-new 3-bedroom terrace house sits in a freshly built Jabi District development, never previously occupied, with every fitting still looking as it did on handover day. Living areas come fully furnished, including sofas, dining furniture, and beds in each bedroom, while the kitchen has fitted cabinets and a cooker point ready to use. The semi-service charge covers estate-wide generator backup that kicks in automatically during outages on top of the regular Band A feed, and a borehole with a treatment plant supplies water to the whole terrace row. Being only a few minutes from Jabi Lake Mall and the Central Business District makes the commute short for anyone working in central Abuja, while the newly finished estate roads and street lighting give the neighbourhood a tidy, still-developing feel that should only improve as more units fill up.",
     images: photosFor(29),
     status: "active",
     verifiedProperty: true,
