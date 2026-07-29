@@ -20,6 +20,8 @@ import { LandlordCard } from "@/features/listing/landlord-card";
 import { SimilarListings } from "@/features/listing/similar-listings";
 import { SpecChips } from "@/features/listing/spec-chips";
 import { ListingMap } from "@/features/search/listing-map";
+import { GateDialog } from "@/features/verification/gate-dialog";
+import { useGate } from "@/features/verification/use-gate";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { formatDate, formatRelativeDays } from "@/lib/format";
 import { similarListings } from "@/lib/marketplace";
@@ -97,18 +99,24 @@ export function ListingDetail({ id }: ListingDetailProps) {
     [listing, listings],
   );
 
-  // ─── Temporary action handlers — Tasks 11–13 replace this block ───────
+  const { requireVerified, gateOpen, setGateOpen } = useGate();
+
+  // ─── Temporary action handlers — Tasks 12–13 replace this block ───────
   // Task 11 wraps all three in the verification gate, Task 12 wires the real
   // apply flow, Task 13 opens the report dialog. They are deliberately the
   // only place this page decides what an action does.
   function handleSave() {
-    toggleSaved(id);
+    requireVerified(() => toggleSaved(id));
   }
   function handleApply() {
-    toast.info("Applying for a home is coming in the next task.");
+    requireVerified(() =>
+      toast.info("Applying for a home is coming in the next task."),
+    );
   }
   function handleContact() {
-    toast.info("Messaging the landlord is coming in the next task.");
+    requireVerified(() =>
+      toast.info("Messaging the landlord is coming in the next task."),
+    );
   }
   function handleReport() {
     toast.info("Reporting a listing is coming in the next task.");
@@ -149,6 +157,7 @@ export function ListingDetail({ id }: ListingDetailProps) {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6">
+      <GateDialog open={gateOpen} onOpenChange={setGateOpen} />
       <nav aria-label="Breadcrumb">
         <ol className="-my-3 flex list-none items-center gap-1 p-0 text-xs text-muted-ink">
           <li>

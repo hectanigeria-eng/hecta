@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { locationLabel } from "@/constants/locations";
 import { PROPERTY_TYPE_LABELS } from "@/constants/marketplace";
+import { GateDialog } from "@/features/verification/gate-dialog";
+import { useGate } from "@/features/verification/use-gate";
 import {
   formatNaira,
   formatRelativeDays,
@@ -56,13 +58,12 @@ export function ListingCard({
     (state.savedByUser[state.activeUserId] ?? []).includes(listing.id),
   );
   const toggleSaved = useHectaStore((state) => state.toggleSaved);
+  const { requireVerified, gateOpen, setGateOpen } = useGate();
 
-  // Task 11 replaces the body of this one handler with the verification gate
-  // (anonymous seekers get a sign-in prompt instead of an immediate toggle).
-  // It is the component's only call into the store's save action — keep it
-  // that way so the swap stays a one-line change.
+  // The component's only call into the store's save action — anonymous
+  // seekers see the verification gate instead of an immediate toggle.
   function handleToggleSaved() {
-    toggleSaved(listing.id);
+    requireVerified(() => toggleSaved(listing.id));
   }
 
   const place = locationLabel(
@@ -86,6 +87,7 @@ export function ListingCard({
         isList ? "flex-col sm:flex-row" : "flex-col",
       )}
     >
+      <GateDialog open={gateOpen} onOpenChange={setGateOpen} />
       <div
         className={cn(
           "relative shrink-0 overflow-hidden bg-paper-2",
