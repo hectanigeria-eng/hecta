@@ -3,11 +3,13 @@
 import {
   CaretLeftIcon,
   CaretRightIcon,
+  MapTrifoldIcon,
+  RowsIcon,
   SmileySadIcon,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -16,12 +18,12 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { Skeleton } from "@/components/ui/skeleton";
 import { RESULTS_PER_PAGE } from "@/constants/marketplace";
 import {
   ListingCard,
   ListingCardSkeleton,
 } from "@/features/search/listing-card";
+import { ListingMap } from "@/features/search/listing-map";
 import { QuickFilters } from "@/features/search/quick-filters";
 import { ResultsToolbar } from "@/features/search/results-toolbar";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -75,22 +77,33 @@ export function SearchResults({ query }: SearchResultsProps) {
   const hydrated = useHydrated();
   const listings = useHectaStore((state) => state.listings);
 
-  const { pageItems, total, totalPages, currentPage } = useMemo(() => {
-    const matched = sortListings(
-      filterListings(listings, toListingFilters(query)),
-      query.sort,
-    );
-    const page = paginate(matched, query.page, RESULTS_PER_PAGE);
-    return {
-      pageItems: page.items,
-      total: page.total,
-      totalPages: page.totalPages,
-      currentPage: Math.min(Math.max(1, query.page), page.totalPages),
-    };
-  }, [listings, query]);
+  const { filtered, pageItems, total, totalPages, currentPage } =
+    useMemo(() => {
+      const matched = sortListings(
+        filterListings(listings, toListingFilters(query)),
+        query.sort,
+      );
+      const page = paginate(matched, query.page, RESULTS_PER_PAGE);
+      return {
+        // The full filtered+sorted set (every page), not just `pageItems` —
+        // the map shows every matching home at once rather than only the
+        // current page, so it re-fits the same bounds a "Next page" click
+        // wouldn't otherwise touch.
+        filtered: matched,
+        pageItems: page.items,
+        total: page.total,
+        totalPages: page.totalPages,
+        currentPage: Math.min(Math.max(1, query.page), page.totalPages),
+      };
+    }, [listings, query]);
 
   const isList = query.view === "list";
   const showMap = query.map;
+
+  // Below `lg` the split view collapses to one full-screen pane at a time;
+  // the floating pill button flips between them. Irrelevant at `lg` and up,
+  // where both columns render side by side regardless of this state.
+  const [mobilePane, setMobilePane] = useState<"list" | "map">("list");
 
   function handleClearFilters() {
     // Keeps location, intent and display preferences; every narrowing filter
@@ -123,7 +136,12 @@ export function SearchResults({ query }: SearchResultsProps) {
           showMap && "lg:grid lg:grid-cols-[1fr_minmax(380px,42%)]",
         )}
       >
-        <div className="flex flex-col gap-6">
+        <div
+          className={cn(
+            "flex flex-col gap-6",
+            showMap && mobilePane === "map" && "hidden lg:flex",
+          )}
+        >
           <h3 id="search-results-heading" className="sr-only">
             Search results
           </h3>
@@ -251,13 +269,45 @@ export function SearchResults({ query }: SearchResultsProps) {
         </div>
 
         {showMap && (
-          <aside aria-label="Map of these results" className="hidden lg:block">
-            {/* Task 9 mounts the Leaflet results map in place of this
-                skeleton; it should stay sticky and fill the column. */}
-            <Skeleton className="sticky top-24 h-[calc(100dvh-9rem)] w-full rounded-2xl ring-1 ring-border" />
+          <aside
+            aria-label="Map of these results"
+            className={cn(
+              "lg:static lg:z-auto lg:block",
+              mobilePane === "map" ? "fixed inset-0 z-30 block" : "hidden",
+            )}
+          >
+            <ListingMap
+              listings={filtered}
+              className="size-full lg:sticky lg:top-20 lg:h-[calc(100dvh-6rem)] lg:rounded-2xl lg:border lg:overflow-hidden"
+            />
           </aside>
         )}
       </div>
+
+      {showMap && (
+        <Button
+          type="button"
+          onClick={() =>
+            setMobilePane((pane) => (pane === "list" ? "map" : "list"))
+          }
+          aria-label={
+            mobilePane === "list" ? "Show map view" : "Show list view"
+          }
+          className="fixed bottom-4 left-1/2 z-40 h-11 -translate-x-1/2 gap-1.5 rounded-full px-6 text-sm font-semibold normal-case tracking-normal shadow-lg lg:hidden"
+        >
+          {mobilePane === "list" ? (
+            <>
+              <MapTrifoldIcon weight="bold" />
+              Map
+            </>
+          ) : (
+            <>
+              <RowsIcon weight="bold" />
+              List
+            </>
+          )}
+        </Button>
+      )}
     </section>
   );
 }

@@ -190,6 +190,26 @@ html.lenis body {
   overflow: hidden;
 }
 
+@layer components {
+  /* The search map's price pins are built via Leaflet's `L.divIcon`, which
+     injects a raw HTML string outside JSX — Tailwind's scanner reliably
+     picks up plain utility classes there, but the pin still gets a named
+     component class (rather than inlining hex colors) so the styling stays
+     token-driven and independent of scanner behavior. */
+  .map-pin {
+    /* `-translate-x-1/2 -translate-y-1/2` inside this project's `@apply`
+       silently breaks the *entire* rule (verified: removing them restores
+       every other utility below) — centering the pin on its marker point
+       is expressed as a plain `transform` instead, since no Tailwind
+       utility resolves here and this isn't a color/token value. */
+    transform: translate(-50%, -50%);
+    @apply inline-block cursor-pointer rounded-full bg-primary-600 px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-primary-foreground shadow-md;
+  }
+  .map-pin-active {
+    @apply bg-secondary-600;
+  }
+}
+
 @layer utilities {
   /* Fade/slide reveal driven by IntersectionObserver toggling [data-reveal] */
   [data-reveal] {
