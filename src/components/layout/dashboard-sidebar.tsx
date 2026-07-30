@@ -1,6 +1,11 @@
 "use client";
 
-import { ListIcon, XIcon } from "@phosphor-icons/react";
+import {
+  CaretLineLeftIcon,
+  CaretLineRightIcon,
+  ListIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +28,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PersonaSwitcher } from "@/features/session/persona-switcher";
+import { useSidebarCollapsed } from "@/hooks/use-sidebar-collapsed";
 import { cn } from "@/lib/utils";
+
+/** Id linking the collapse toggle to the region it shows or hides. */
+const NAV_COLUMN_ID = "dashboard-sidebar-nav-column";
 
 export interface DashboardNavItem {
   href: string;
@@ -166,9 +175,17 @@ export function DashboardSidebar({
   const pathname = usePathname();
   const root = sectionRoot(pathname);
   const activeItem = items.find((item) => isNavItemActive(pathname, item.href));
+  const [collapsed, setCollapsed] = useSidebarCollapsed();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-deep-2 lg:grid lg:grid-cols-[5rem_17rem_minmax(0,1fr)]">
+    <div
+      className={cn(
+        "flex min-h-dvh flex-col bg-deep-2 lg:grid lg:transition-[grid-template-columns] lg:duration-200 lg:ease-out motion-reduce:lg:transition-none",
+        collapsed
+          ? "lg:grid-cols-[5rem_0rem_minmax(0,1fr)]"
+          : "lg:grid-cols-[5rem_17rem_minmax(0,1fr)]",
+      )}
+    >
       <TooltipProvider>
         <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:items-center lg:gap-8 lg:py-6">
           <Link
@@ -186,6 +203,35 @@ export function DashboardSidebar({
               height={26}
             />
           </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {/* A plain element, not the shared `Button` primitive: that
+                  component's base styles repaint the background whenever
+                  `aria-expanded="true"` (a rule meant for popover/dropdown
+                  triggers), which fires here in this control's default
+                  (expanded) state and paints an off-brand light square. */}
+              <button
+                type="button"
+                aria-expanded={!collapsed}
+                aria-controls={NAV_COLUMN_ID}
+                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                onClick={() => setCollapsed(!collapsed)}
+                className={cn(
+                  "-mt-4 flex size-11 items-center justify-center rounded-xl text-paper/70 transition-colors hover:bg-deep hover:text-paper motion-reduce:transition-none",
+                  DARK_FOCUS_RING,
+                )}
+              >
+                {collapsed ? (
+                  <CaretLineRightIcon className="size-5" />
+                ) : (
+                  <CaretLineLeftIcon className="size-5" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            </TooltipContent>
+          </Tooltip>
           <nav
             aria-label={`${root.label} shortcuts`}
             className="flex flex-1 flex-col items-center gap-2"
@@ -202,7 +248,17 @@ export function DashboardSidebar({
         </aside>
       </TooltipProvider>
 
-      <div className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:gap-8 lg:px-3 lg:py-6">
+      <div
+        id={NAV_COLUMN_ID}
+        // Inert (not just visually collapsed) while hidden, so a keyboard or
+        // AT user tabbing through the rail can't land on off-screen links —
+        // every item here is already reachable via its rail icon above.
+        inert={collapsed ? true : undefined}
+        className={cn(
+          "hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:gap-8 lg:overflow-hidden lg:px-3 lg:py-6 lg:transition-opacity lg:duration-200 lg:ease-out motion-reduce:lg:transition-none",
+          collapsed && "lg:opacity-0",
+        )}
+      >
         <span className="flex h-11 items-center truncate px-3 font-heading text-2xl font-bold tracking-tight text-paper">
           {title}
         </span>
