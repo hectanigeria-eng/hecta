@@ -29,13 +29,24 @@ describe("reviewVerification", () => {
   });
 
   it("does not touch landlordVerified for a non-approved status", () => {
+    // ll-seed-3 is seeded with landlordVerified: true, which made the
+    // original version of this test a tautology — it asserted `true` and
+    // would have passed even if `reviewVerification` wrongly flipped the
+    // flag on a rejection. Forcing it to `false` first means the assertion
+    // below only passes if the action genuinely leaves it untouched.
+    useHectaStore.setState((state) => ({
+      users: state.users.map((user) =>
+        user.id === "ll-seed-3" ? { ...user, landlordVerified: false } : user,
+      ),
+    }));
+
     useHectaStore
       .getState()
       .reviewVerification("verification-3", "rejected", "Docs don't match.");
 
     const state = useHectaStore.getState();
     const owner = state.users.find((u) => u.id === "ll-seed-3");
-    expect(owner?.landlordVerified).toBe(true); // was already true in seed, unchanged
+    expect(owner?.landlordVerified).toBe(false);
     expect(
       state.verifications.find((v) => v.id === "verification-3")?.reviewNote,
     ).toBe("Docs don't match.");
