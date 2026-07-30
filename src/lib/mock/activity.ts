@@ -15,11 +15,18 @@ function daysAgo(days: number): string {
 // (Ikate) — one highly-qualified (immediate/full-payment, high budget) and
 // one exploratory (instalments, low budget) application per listing, so
 // qualification-based sorting has visible contrast.
+//
+// app-1's applicant is `user-tunde` (not one of the extra seed-only
+// applicants) specifically so the demo's only seeded message thread already
+// belongs to a switchable persona: a demo user who switches to Tunde and
+// opens /messages on first visit sees this conversation instead of an empty
+// inbox (Chidi and Fatima exist only as authors of other seeded activity and
+// are never selectable in the persona switcher).
 export const MOCK_APPLICATIONS: Application[] = [
   {
     id: "app-1",
     listingId: "listing-1",
-    applicantId: "user-chidi",
+    applicantId: "user-tunde",
     message:
       "Hi Amaka, I'm ready to move immediately and can pay the full year upfront. Would love to schedule a viewing this week.",
     intentProfile: {
@@ -78,14 +85,14 @@ export const MOCK_APPLICATIONS: Application[] = [
   },
 ];
 
-// Thread on the "accepted-track" application: app-1 (Chidi, immediate +
+// Thread on the "accepted-track" application: app-1 (Tunde, immediate +
 // full-payment, viewed by Amaka) — the most qualified applicant on listing-1.
 export const MOCK_THREADS: MessageThread[] = [
   {
     id: "thread-1",
     applicationId: "app-1",
     listingId: "listing-1",
-    participantIds: ["user-chidi", "user-amaka"],
+    participantIds: ["user-tunde", "user-amaka"],
   },
 ];
 
@@ -93,7 +100,7 @@ export const MOCK_MESSAGES: ChatMessage[] = [
   {
     id: "msg-1",
     threadId: "thread-1",
-    senderId: "user-chidi",
+    senderId: "user-tunde",
     body: "Hi Amaka, I'm ready to move immediately and can pay the full year upfront. Would love to schedule a viewing this week.",
     sentAt: daysAgo(6),
   },
@@ -101,13 +108,13 @@ export const MOCK_MESSAGES: ChatMessage[] = [
     id: "msg-2",
     threadId: "thread-1",
     senderId: "user-amaka",
-    body: "Hi Tunde... I mean Chidi, thanks for reaching out! The flat is still available. I can do a viewing Thursday afternoon, does that work?",
+    body: "Hi Tunde, thanks for reaching out! The flat is still available. I can do a viewing Thursday afternoon, does that work?",
     sentAt: daysAgo(5),
   },
   {
     id: "msg-3",
     threadId: "thread-1",
-    senderId: "user-chidi",
+    senderId: "user-tunde",
     body: "Thursday afternoon works well for me. Could you also confirm what the caution deposit covers before I come by?",
     sentAt: daysAgo(5),
   },
