@@ -100,7 +100,7 @@ export function ResultsToolbar({ query, total }: ResultsToolbarProps) {
             type="button"
             variant="link"
             onClick={handleEditLocation}
-            className="h-auto gap-1 p-0 text-sm font-medium text-primary-600 normal-case tracking-normal"
+            className="-mx-2 h-11 gap-1 px-2 text-sm font-medium text-primary-600 normal-case tracking-normal"
           >
             <PencilSimpleIcon />
             Edit location
@@ -114,7 +114,7 @@ export function ResultsToolbar({ query, total }: ResultsToolbarProps) {
         </Label>
         <Select
           value={query.sort}
-          onValueChange={(v) => apply({ sort: toSort(v) })}
+          onValueChange={(v) => apply({ sort: toSort(v), page: 1 })}
         >
           <SelectTrigger
             id={sortId}
@@ -135,18 +135,18 @@ export function ResultsToolbar({ query, total }: ResultsToolbarProps) {
           value={query.view}
           onValueChange={(v) => apply({ view: toView(v) })}
         >
-          <TabsList className="h-11 rounded-full border border-border bg-card p-1">
+          <TabsList className="h-11 rounded-full border border-border bg-card p-0">
             <TabsTrigger
               value="grid"
               aria-label="Grid view"
-              className="size-9 rounded-full px-0 data-active:bg-primary-500 data-active:text-primary-foreground"
+              className="size-11 rounded-full px-0 data-active:bg-primary-500 data-active:text-primary-foreground"
             >
               <SquaresFourIcon className="size-4" />
             </TabsTrigger>
             <TabsTrigger
               value="list"
               aria-label="List view"
-              className="size-9 rounded-full px-0 data-active:bg-primary-500 data-active:text-primary-foreground"
+              className="size-11 rounded-full px-0 data-active:bg-primary-500 data-active:text-primary-foreground"
             >
               <RowsIcon className="size-4" />
             </TabsTrigger>
