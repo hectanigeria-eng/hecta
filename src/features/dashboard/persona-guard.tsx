@@ -48,8 +48,8 @@ export function PersonaGuard({ persona, children }: PersonaGuardProps) {
 
   if (!hydrated) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-paper px-4">
-        <Skeleton className="h-48 w-full max-w-sm rounded-2xl" aria-hidden />
+      <div className="flex min-h-dvh items-center justify-center bg-deep-2 px-4">
+        <Skeleton className="h-48 w-full max-w-sm rounded-3xl" aria-hidden />
       </div>
     );
   }
@@ -61,7 +61,7 @@ export function PersonaGuard({ persona, children }: PersonaGuardProps) {
   const label = PERSONA_LABEL[persona];
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-paper px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-deep-2 px-4">
       <Card size="sm" className="w-full max-w-sm rounded-3xl text-center">
         <CardContent className="flex flex-col items-center gap-4">
           <h1 className="font-heading text-xl font-bold text-ink">
