@@ -41,6 +41,12 @@ export function Gallery({ images, title, place }: GalleryProps) {
   // visitor who never opens it.
   const [openAt, setOpenAt] = useState<number | null>(null);
 
+  // Listings are expected to carry at least four photos (enforced at
+  // creation), but this component's safety shouldn't depend on that upstream
+  // guarantee holding — an empty array would otherwise leave `hero`
+  // undefined and crash `next/image`, which requires a `src`.
+  if (images.length === 0) return null;
+
   const tiles = images.slice(0, GRID_TILE_COUNT);
   const [hero, ...rest] = tiles;
   const hiddenCount = images.length - tiles.length;

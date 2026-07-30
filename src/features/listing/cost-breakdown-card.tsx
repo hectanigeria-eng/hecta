@@ -44,11 +44,7 @@ export function CostBreakdownCard({
   const { price, refundable, total } = costBreakdown(listing);
 
   return (
-    <Card
-      size="sm"
-      className="gap-5 rounded-3xl ring-1 ring-border"
-      aria-labelledby="cost-breakdown-heading"
-    >
+    <Card size="sm" className="gap-5 rounded-3xl ring-1 ring-border">
       <CardContent className="flex flex-col gap-1">
         <h2
           id="cost-breakdown-heading"
@@ -79,8 +75,11 @@ export function CostBreakdownCard({
               </TableCell>
             </TableRow>
 
-            {listing.otherCharges.map((charge) => (
-              <TableRow key={charge.label} className="border-border">
+            {listing.otherCharges.map((charge, index) => (
+              <TableRow
+                key={`${charge.label}-${index}`}
+                className="border-border"
+              >
                 {/* Label and badge share one cell so they stack instead of
                     forcing the card wider than a 375px viewport. */}
                 <TableCell className="py-2.5 pl-5 whitespace-normal">

@@ -197,109 +197,143 @@ export function NewListingWizard() {
   }, [submittedTitle, router]);
 
   if (!hydrated) {
-    return <Skeleton className="h-128 w-full rounded-3xl" aria-hidden />;
+    return (
+      <>
+        <PageHeader showSteps={false} />
+        <Skeleton className="h-128 w-full rounded-3xl" aria-hidden />
+      </>
+    );
   }
 
   if (!isLandlordVerified) {
-    return <VerificationRequiredCard />;
+    return (
+      <>
+        <PageHeader showSteps={false} />
+        <VerificationRequiredCard />
+      </>
+    );
   }
 
   if (submittedTitle !== null) {
-    return <SubmittedPanel title={submittedTitle} />;
+    return (
+      <>
+        <PageHeader showSteps={false} />
+        <SubmittedPanel title={submittedTitle} />
+      </>
+    );
   }
 
   const step = WIZARD_STEPS[stepIndex];
   const resumeLabel = resumeAtReview ? RESUME_LABEL : undefined;
 
   return (
-    <div className="flex flex-col gap-6">
-      <WizardHeader stepIndex={stepIndex} onJump={jumpTo} />
+    <>
+      <PageHeader showSteps />
+      <div className="flex flex-col gap-6">
+        <WizardHeader stepIndex={stepIndex} onJump={jumpTo} />
 
-      <Card className="rounded-3xl">
-        <CardContent className="flex flex-col gap-6">
-          {step.id === "basics" && (
-            <BasicsStep
-              defaultValues={draft.basics}
-              onChange={saveBasics}
-              onNext={goNext}
-              nextLabel={resumeLabel}
-            />
-          )}
-          {step.id === "location" && (
-            <LocationStep
-              defaultValues={draft.location}
-              onChange={saveLocation}
-              onNext={goNext}
-              onBack={goBack}
-              nextLabel={resumeLabel}
-            />
-          )}
-          {step.id === "specs" && (
-            <SpecsStep
-              defaultValues={draft.specs}
-              intent={draft.basics.intent}
-              propertyType={draft.basics.propertyType}
-              onChange={saveSpecs}
-              onNext={goNext}
-              onBack={goBack}
-              nextLabel={resumeLabel}
-            />
-          )}
-          {step.id === "costs" && (
-            <CostsStep
-              defaultValues={draft.costs}
-              intent={draft.basics.intent}
-              onChange={saveCosts}
-              onNext={goNext}
-              onBack={goBack}
-              nextLabel={resumeLabel}
-            />
-          )}
-          {step.id === "photos" && (
-            <PhotosStep
-              defaultValues={draft.photos}
-              onChange={savePhotos}
-              onNext={goNext}
-              onBack={goBack}
-              nextLabel={resumeLabel}
-            />
-          )}
-          {step.id === "details" && (
-            <DetailsStep
-              defaultValues={draft.details}
-              onChange={saveDetails}
-              onNext={goNext}
-              onBack={goBack}
-              nextLabel={resumeLabel ?? "Review listing"}
-            />
-          )}
-          {step.id === "review" && (
-            <>
-              <StepIntro
-                title="Check it over"
-                blurb="This is exactly what a seeker sees. Anything you want to change is one tap away."
+        <Card className="rounded-3xl">
+          <CardContent className="flex flex-col gap-6">
+            {step.id === "basics" && (
+              <BasicsStep
+                defaultValues={draft.basics}
+                onChange={saveBasics}
+                onNext={goNext}
+                nextLabel={resumeLabel}
               />
-              <ReviewStep
-                draft={draft}
-                landlordId={user.id}
-                submitting={submitting}
-                onEdit={goTo}
-                onSubmit={handleSubmitListing}
+            )}
+            {step.id === "location" && (
+              <LocationStep
+                defaultValues={draft.location}
+                onChange={saveLocation}
+                onNext={goNext}
+                onBack={goBack}
+                nextLabel={resumeLabel}
               />
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={goBack}
-                className="h-11 self-start rounded-full px-4 text-sm font-semibold tracking-normal normal-case"
-              >
-                <ArrowLeftIcon weight="bold" aria-hidden className="size-4" />
-                Back
-              </Button>
-            </>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            )}
+            {step.id === "specs" && (
+              <SpecsStep
+                defaultValues={draft.specs}
+                intent={draft.basics.intent}
+                propertyType={draft.basics.propertyType}
+                onChange={saveSpecs}
+                onNext={goNext}
+                onBack={goBack}
+                nextLabel={resumeLabel}
+              />
+            )}
+            {step.id === "costs" && (
+              <CostsStep
+                defaultValues={draft.costs}
+                intent={draft.basics.intent}
+                onChange={saveCosts}
+                onNext={goNext}
+                onBack={goBack}
+                nextLabel={resumeLabel}
+              />
+            )}
+            {step.id === "photos" && (
+              <PhotosStep
+                defaultValues={draft.photos}
+                onChange={savePhotos}
+                onNext={goNext}
+                onBack={goBack}
+                nextLabel={resumeLabel}
+              />
+            )}
+            {step.id === "details" && (
+              <DetailsStep
+                defaultValues={draft.details}
+                onChange={saveDetails}
+                onNext={goNext}
+                onBack={goBack}
+                nextLabel={resumeLabel ?? "Review listing"}
+              />
+            )}
+            {step.id === "review" && (
+              <>
+                <StepIntro
+                  title="Check it over"
+                  blurb="This is exactly what a seeker sees. Anything you want to change is one tap away."
+                />
+                <ReviewStep
+                  draft={draft}
+                  landlordId={user.id}
+                  submitting={submitting}
+                  onEdit={goTo}
+                  onSubmit={handleSubmitListing}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={goBack}
+                  className="h-11 self-start rounded-full px-4 text-sm font-semibold tracking-normal normal-case"
+                >
+                  <ArrowLeftIcon weight="bold" aria-hidden className="size-4" />
+                  Back
+                </Button>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+}
+
+function PageHeader({ showSteps }: { showSteps: boolean }) {
+  return (
+    <header className="flex flex-col gap-1.5">
+      <h1 className="font-heading text-2xl font-bold text-ink">
+        List your property
+      </h1>
+      {showSteps && (
+        <p className="text-sm text-muted-ink">
+          Seven short steps. Everything you enter is kept as you move between
+          them.
+        </p>
+      )}
+    </header>
   );
 }
 
@@ -849,7 +883,7 @@ function SpecsStep({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor={`${fieldId}-size`}>
-            Size in sqm {sizeRequired ? "" : "(optional)"}
+            {`Size in sqm${sizeRequired ? "" : " (optional)"}`}
           </Label>
           <Input
             id={`${fieldId}-size`}

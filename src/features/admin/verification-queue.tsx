@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CheckIcon,
   FileTextIcon,
-  PhoneIcon,
   UserCircleIcon,
   WarningIcon,
 } from "@phosphor-icons/react";
@@ -329,9 +328,9 @@ function VerificationDetail({
               </dd>
             </div>
             <div className="flex flex-col gap-0.5">
-              <dt className="text-xs text-muted-ink">Phone</dt>
+              <dt className="text-xs text-muted-ink">Identity check</dt>
               <dd className="flex items-center gap-1.5 text-sm font-medium text-ink">
-                <PhoneIcon
+                <UserCircleIcon
                   weight={ownerIdentityVerified ? "fill" : "regular"}
                   aria-hidden
                   className={cn(
@@ -341,7 +340,7 @@ function VerificationDetail({
                       : "text-muted-ink",
                   )}
                 />
-                {ownerIdentityVerified ? "Verified" : "Not verified"}
+                {ownerIdentityVerified ? "Completed" : "Not completed"}
               </dd>
             </div>
           </dl>

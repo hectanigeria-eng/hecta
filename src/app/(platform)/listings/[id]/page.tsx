@@ -60,7 +60,11 @@ export async function generateMetadata({
     listing.location.area,
   );
   const priceLine = `${formatNaira(listing.price)}${pricePeriodLabel(listing.pricePeriod)}`;
-  const description = `${priceLine} in ${place}. See the full move-in cost — rent, agency, legal and caution fees — upfront before you apply.`;
+  const costWords =
+    listing.intent === "buy"
+      ? "purchase price, agency and legal fees"
+      : "rent, agency, legal and caution fees";
+  const description = `${priceLine} in ${place}. See the full move-in cost — ${costWords} — upfront before you apply.`;
 
   return {
     title: `${truncate(listing.title, MAX_TITLE_LENGTH - TITLE_SUFFIX.length)}${TITLE_SUFFIX}`,
