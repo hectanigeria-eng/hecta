@@ -1,8 +1,16 @@
 import {
   AUTO_SUSPEND_REPORT_COUNT,
   DAILY_APPLICATION_LIMIT,
+  MEDIUM_MATCH_THRESHOLD,
   MIN_COMPARABLES_FOR_PRICE_CHECK,
   MONTHLY_APPLICATION_LIMIT,
+  QUALIFICATION_BUDGET_FULL_SCORE,
+  QUALIFICATION_BUDGET_NONE_SCORE,
+  QUALIFICATION_BUDGET_PARTIAL_RATIO,
+  QUALIFICATION_BUDGET_PARTIAL_SCORE,
+  QUALIFICATION_PAYMENT_SCORE,
+  QUALIFICATION_TIMELINE_SCORE,
+  STRONG_MATCH_THRESHOLD,
   SUSPICIOUS_PRICE_HIGH_RATIO,
   SUSPICIOUS_PRICE_LOW_RATIO,
 } from "@/constants/marketplace";
@@ -14,11 +22,9 @@ import type {
   IntentProfile,
   LeaseType,
   Listing,
-  PaymentPlan,
   PropertyType,
   Report,
   ServicedLevel,
-  Timeline,
 } from "@/lib/types";
 
 const WAT_OFFSET_MS = 60 * 60 * 1000; // Africa/Lagos is UTC+1 year-round (no DST)
@@ -236,21 +242,48 @@ export function qualificationScore(
   profile: IntentProfile,
   listing: Listing,
 ): number {
-  const timeline: Record<Timeline, number> = {
-    immediate: 40,
-    within_1_month: 30,
-    "1_3_months": 15,
-    exploring: 5,
-  };
-  const payment: Record<PaymentPlan, number> = {
-    full: 20,
-    mortgage: 12,
-    instalments: 8,
-  };
   const total = totalMoveInCost(listing);
   const budget =
-    profile.budgetMax >= total ? 40 : profile.budgetMax >= total * 0.8 ? 20 : 0;
-  return timeline[profile.timeline] + budget + payment[profile.paymentPlan];
+    profile.budgetMax >= total
+      ? QUALIFICATION_BUDGET_FULL_SCORE
+      : profile.budgetMax >= total * QUALIFICATION_BUDGET_PARTIAL_RATIO
+        ? QUALIFICATION_BUDGET_PARTIAL_SCORE
+        : QUALIFICATION_BUDGET_NONE_SCORE;
+  return (
+    QUALIFICATION_TIMELINE_SCORE[profile.timeline] +
+    budget +
+    QUALIFICATION_PAYMENT_SCORE[profile.paymentPlan]
+  );
+}
+
+export interface QualificationTier {
+  label: string;
+  className: string;
+}
+
+/**
+ * Maps a 0–100 `qualificationScore` to the three-tier badge the landlord
+ * scans first in the applications inbox. The word ("Strong"/"Medium"/"Low")
+ * plus the number both carry the meaning — colour is decoration, never the
+ * only signal.
+ */
+export function qualificationTier(score: number): QualificationTier {
+  if (score >= STRONG_MATCH_THRESHOLD) {
+    return {
+      label: `Strong match ${score}`,
+      className: "bg-primary-100 text-primary-800",
+    };
+  }
+  if (score >= MEDIUM_MATCH_THRESHOLD) {
+    return {
+      label: `Medium match ${score}`,
+      className: "bg-secondary-100 text-secondary-900",
+    };
+  }
+  return {
+    label: `Low match ${score}`,
+    className: "bg-muted text-muted-foreground",
+  };
 }
 
 export function sortApplicationsByQualification(

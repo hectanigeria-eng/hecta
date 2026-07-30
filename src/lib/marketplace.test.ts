@@ -13,6 +13,7 @@ import {
   landlordAwaitingReplyCount,
   paginate,
   qualificationScore,
+  qualificationTier,
   remainingQuota,
   shouldAutoSuspend,
   similarListings,
@@ -558,6 +559,41 @@ describe("qualificationScore", () => {
       budgetMax: 800_000,
     });
     expect(qualificationScore(profile, listing)).toBe(62);
+  });
+});
+
+describe("qualificationTier", () => {
+  it("labels a score at or above the strong threshold as a strong match", () => {
+    expect(qualificationTier(80)).toEqual({
+      label: "Strong match 80",
+      className: "bg-primary-100 text-primary-800",
+    });
+    expect(qualificationTier(70)).toEqual({
+      label: "Strong match 70",
+      className: "bg-primary-100 text-primary-800",
+    });
+  });
+
+  it("labels a score between the medium and strong thresholds as a medium match", () => {
+    expect(qualificationTier(69)).toEqual({
+      label: "Medium match 69",
+      className: "bg-secondary-100 text-secondary-900",
+    });
+    expect(qualificationTier(40)).toEqual({
+      label: "Medium match 40",
+      className: "bg-secondary-100 text-secondary-900",
+    });
+  });
+
+  it("labels a score below the medium threshold as a low match", () => {
+    expect(qualificationTier(13)).toEqual({
+      label: "Low match 13",
+      className: "bg-muted text-muted-foreground",
+    });
+    expect(qualificationTier(0)).toEqual({
+      label: "Low match 0",
+      className: "bg-muted text-muted-foreground",
+    });
   });
 });
 

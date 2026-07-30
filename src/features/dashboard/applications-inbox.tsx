@@ -28,6 +28,7 @@ import { useSession } from "@/hooks/use-session";
 import { formatDate, formatNaira } from "@/lib/format";
 import {
   qualificationScore,
+  qualificationTier,
   sortApplicationsByQualification,
   totalMoveInCost,
 } from "@/lib/marketplace";
@@ -53,38 +54,6 @@ const PAYMENT_LABEL: Record<PaymentPlan, string> = {
   mortgage: "Mortgage",
   instalments: "Instalments",
 };
-
-const STRONG_MATCH_THRESHOLD = 70;
-const MEDIUM_MATCH_THRESHOLD = 40;
-
-interface QualificationTier {
-  label: string;
-  className: string;
-}
-
-/**
- * Maps a 0–100 `qualificationScore` to the three-tier badge the landlord
- * scans first. The word ("Strong"/"Medium"/"Low") plus the number both carry
- * the meaning — colour is decoration, never the only signal.
- */
-function qualificationTier(score: number): QualificationTier {
-  if (score >= STRONG_MATCH_THRESHOLD) {
-    return {
-      label: `Strong match ${score}`,
-      className: "bg-primary-100 text-primary-800",
-    };
-  }
-  if (score >= MEDIUM_MATCH_THRESHOLD) {
-    return {
-      label: `Medium match ${score}`,
-      className: "bg-secondary-100 text-secondary-900",
-    };
-  }
-  return {
-    label: `Low match ${score}`,
-    className: "bg-muted text-muted-foreground",
-  };
-}
 
 interface ListingGroup {
   listing: Listing;
