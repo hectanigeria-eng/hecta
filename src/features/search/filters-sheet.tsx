@@ -56,6 +56,7 @@ interface FilterDraft {
   furnishing: Furnishing | typeof ANY;
   serviced: ServicedLevel | typeof ANY;
   lease: LeaseType | typeof ANY;
+  moveInDate: string;
   pets: boolean;
   amenities: string[];
   verifiedOnly: boolean;
@@ -70,6 +71,7 @@ const CLEARED_DRAFT: FilterDraft = {
   furnishing: ANY,
   serviced: ANY,
   lease: ANY,
+  moveInDate: "",
   pets: false,
   amenities: [],
   // The trust layer is the product's differentiator, so "verified only" is
@@ -87,6 +89,7 @@ function draftFromQuery(query: SearchQuery): FilterDraft {
     furnishing: query.furnishing ?? ANY,
     serviced: query.serviced ?? ANY,
     lease: query.lease ?? ANY,
+    moveInDate: query.moveInDate ?? "",
     pets: query.pets === true,
     amenities: query.amenities ?? [],
     verifiedOnly: query.verifiedOnly,
@@ -111,6 +114,7 @@ function draftToQuery(draft: FilterDraft): Partial<SearchQuery> {
     furnishing: draft.furnishing === ANY ? undefined : draft.furnishing,
     serviced: draft.serviced === ANY ? undefined : draft.serviced,
     lease: draft.lease === ANY ? undefined : draft.lease,
+    moveInDate: draft.moveInDate === "" ? undefined : draft.moveInDate,
     pets: draft.pets ? true : undefined,
     amenities: draft.amenities,
     verifiedOnly: draft.verifiedOnly,
@@ -190,6 +194,7 @@ export function FiltersSheet({ query, activeCount }: FiltersSheetProps) {
 
   const priceMinId = useId();
   const priceMaxId = useId();
+  const moveInDateId = useId();
   const petsId = useId();
   const verifiedId = useId();
   const typePrefix = useId();
@@ -402,6 +407,22 @@ export function FiltersSheet({ query, activeCount }: FiltersSheetProps) {
                 />
               ))}
             </RadioGroup>
+          </FilterSection>
+
+          <Separator />
+
+          <FilterSection title="Move-in date">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor={moveInDateId}>Available by</Label>
+              <Input
+                id={moveInDateId}
+                type="date"
+                value={draft.moveInDate}
+                onChange={(event) =>
+                  setDraft({ ...draft, moveInDate: event.target.value })
+                }
+              />
+            </div>
           </FilterSection>
 
           <Separator />

@@ -70,6 +70,7 @@ export interface ListingFilters {
   leaseType?: LeaseType;
   amenities?: string[];
   verifiedOnly?: boolean; // default true at call sites
+  moveInBy?: string; // ISO date; matches listings available by this date
 }
 
 export function filterListings(
@@ -133,6 +134,8 @@ export function filterListings(
     )
       return false;
     if (filters.verifiedOnly === true && !listing.verifiedProperty)
+      return false;
+    if (filters.moveInBy !== undefined && listing.moveInDate > filters.moveInBy)
       return false;
     return true;
   });

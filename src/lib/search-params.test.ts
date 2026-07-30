@@ -134,6 +134,7 @@ describe("buildSearchUrl", () => {
       serviced: "full",
       pets: true,
       lease: "long_term",
+      moveInDate: "2026-09-01",
       amenities: ["gym", "pool"],
       verifiedOnly: false,
       sort: "price_asc",
@@ -160,6 +161,7 @@ describe("buildSearchUrl", () => {
       serviced: "full",
       pets: true,
       lease: "long_term",
+      moveInDate: "2026-09-01",
       amenities: ["gym", "pool"],
       verifiedOnly: false,
       sort: "price_asc",
@@ -167,6 +169,19 @@ describe("buildSearchUrl", () => {
       view: "list",
       map: false,
     });
+  });
+
+  it("round-trips the moveInDate param on its own", () => {
+    const query = buildSearchUrl({ moveInDate: "2026-09-01" });
+    expect(query).toBe("/search?moveInDate=2026-09-01");
+    const [, qs] = query.split("?");
+    const raw = Object.fromEntries(new URLSearchParams(qs));
+    expect(parseSearchParams(raw).moveInDate).toBe("2026-09-01");
+  });
+
+  it("omits moveInDate from the URL and default parse when absent", () => {
+    expect(buildSearchUrl({})).not.toContain("moveInDate");
+    expect(parseSearchParams({}).moveInDate).toBeUndefined();
   });
 
   it("round-trips the all-defaults query back to a bare /search URL", () => {

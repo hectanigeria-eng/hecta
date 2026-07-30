@@ -251,6 +251,51 @@ describe("filterListings", () => {
     const result = filterListings(all, { intent: "rent", bathroomsMin: 2 });
     expect(result.map((l) => l.id)).toEqual(["l1", "l2"]);
   });
+
+  describe("moveInBy", () => {
+    const earlyMoveIn = makeListing({
+      id: "early",
+      status: "active",
+      intent: "rent",
+      moveInDate: "2026-08-01",
+    });
+    const lateMoveIn = makeListing({
+      id: "late",
+      status: "active",
+      intent: "rent",
+      moveInDate: "2026-10-01",
+    });
+    const both = [earlyMoveIn, lateMoveIn];
+
+    it("includes a listing whose moveInDate is on or before the chosen date", () => {
+      const result = filterListings(both, {
+        intent: "rent",
+        moveInBy: "2026-08-01",
+      });
+      expect(result.map((l) => l.id)).toEqual(["early"]);
+    });
+
+    it("excludes a listing whose moveInDate is after the chosen date", () => {
+      const result = filterListings(both, {
+        intent: "rent",
+        moveInBy: "2026-09-01",
+      });
+      expect(result.map((l) => l.id)).toEqual(["early"]);
+    });
+
+    it("includes every listing when moveInBy is not set", () => {
+      const result = filterListings(both, { intent: "rent" });
+      expect(result.map((l) => l.id)).toEqual(["early", "late"]);
+    });
+
+    it("includes a listing whose moveInDate exactly equals the chosen date", () => {
+      const result = filterListings(both, {
+        intent: "rent",
+        moveInBy: "2026-10-01",
+      });
+      expect(result.map((l) => l.id)).toEqual(["early", "late"]);
+    });
+  });
 });
 
 describe("sortListings", () => {

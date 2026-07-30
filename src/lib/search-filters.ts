@@ -50,6 +50,7 @@ export function toListingFilters(query: SearchQuery): ListingFilters {
     leaseType: query.lease,
     amenities: constrainedBy(query.amenities),
     verifiedOnly: query.verifiedOnly,
+    moveInBy: query.moveInDate,
   };
 }
 
@@ -70,6 +71,7 @@ export function activeFilterCount(query: SearchQuery): number {
     query.pets !== undefined,
     query.lease !== undefined,
     constrainedBy(query.amenities) !== undefined,
+    query.moveInDate !== undefined,
   ];
   return flags.filter(Boolean).length;
 }

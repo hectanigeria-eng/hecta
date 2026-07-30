@@ -55,6 +55,17 @@ describe("toListingFilters", () => {
     expect(filters.leaseType).toBe("long_term");
     expect(filters.petsAllowed).toBe(true);
   });
+
+  it("maps moveInDate onto moveInBy", () => {
+    const filters = toListingFilters(
+      parseSearchParams({ moveInDate: "2026-09-01" }),
+    );
+    expect(filters.moveInBy).toBe("2026-09-01");
+  });
+
+  it("leaves moveInBy undefined when moveInDate is absent", () => {
+    expect(toListingFilters(parseSearchParams({})).moveInBy).toBeUndefined();
+  });
 });
 
 describe("activeFilterCount", () => {
@@ -90,5 +101,11 @@ describe("activeFilterCount", () => {
     expect(
       activeFilterCount(parseSearchParams({ beds: "0", baths: "0" })),
     ).toBe(0);
+  });
+
+  it("counts a moveInDate filter", () => {
+    expect(
+      activeFilterCount(parseSearchParams({ moveInDate: "2026-09-01" })),
+    ).toBe(1);
   });
 });

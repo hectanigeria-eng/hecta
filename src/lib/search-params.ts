@@ -40,6 +40,7 @@ export const searchParamsSchema = z.object({
   serviced: z.enum(["none", "semi", "full"]).optional(),
   pets: booleanParam.optional(),
   lease: z.enum(["short_term", "long_term"]).optional(),
+  moveInDate: z.string().optional(),
   amenities: z
     .string()
     .transform((s) => s.split(",").filter(Boolean))
