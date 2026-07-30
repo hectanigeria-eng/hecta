@@ -8,6 +8,7 @@ import {
 } from "@/constants/marketplace";
 import type {
   Application,
+  ApplicationStatus,
   Furnishing,
   Intent,
   IntentProfile,
@@ -196,6 +197,39 @@ export function remainingQuota(
     day: Math.max(0, DAILY_APPLICATION_LIMIT - day),
     month: Math.max(0, MONTHLY_APPLICATION_LIMIT - month),
   };
+}
+
+// A landlord's own reply is still owed while an application sits in either
+// of these two statuses — "submitted" (not yet opened) or "viewed" (opened
+// but not yet actioned). Backs the "awaiting reply" badge/tile shown in both
+// the landlord dashboard's nav sidebar and its overview stats, so both stay
+// in lockstep by construction rather than by two copies of the same rule
+// agreeing.
+const AWAITING_REPLY_STATUSES: ReadonlySet<ApplicationStatus> = new Set([
+  "submitted",
+  "viewed",
+]);
+
+/**
+ * Count of applications on `landlordId`'s own listings that are still
+ * awaiting a reply (accepted/declined/info-requested applications don't
+ * count — the landlord has already acted on those).
+ */
+export function landlordAwaitingReplyCount(
+  listings: Listing[],
+  applications: Application[],
+  landlordId: string,
+): number {
+  const myListingIds = new Set(
+    listings
+      .filter((listing) => listing.landlordId === landlordId)
+      .map((listing) => listing.id),
+  );
+  return applications.filter(
+    (application) =>
+      myListingIds.has(application.listingId) &&
+      AWAITING_REPLY_STATUSES.has(application.status),
+  ).length;
 }
 
 export function qualificationScore(

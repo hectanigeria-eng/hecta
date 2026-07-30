@@ -10,6 +10,7 @@ import {
   filterListings,
   isReconfirmDue,
   isSuspiciousPrice,
+  landlordAwaitingReplyCount,
   paginate,
   qualificationScore,
   remainingQuota,
@@ -467,6 +468,64 @@ describe("remainingQuota", () => {
     // Both the application and "now" fall on the same WAT calendar day
     // (2027-01-01), so the daily counter is decremented too.
     expect(result.day).toBe(DAILY_APPLICATION_LIMIT - 1);
+  });
+});
+
+describe("landlordAwaitingReplyCount", () => {
+  const myListing = makeListing({ id: "mine", landlordId: "landlord-1" });
+  const otherListing = makeListing({
+    id: "not-mine",
+    landlordId: "landlord-2",
+  });
+
+  it("counts submitted and viewed applications on the landlord's own listings", () => {
+    const applications: Application[] = [
+      makeApplication({ id: "a1", listingId: "mine", status: "submitted" }),
+      makeApplication({ id: "a2", listingId: "mine", status: "viewed" }),
+    ];
+    expect(
+      landlordAwaitingReplyCount(
+        [myListing, otherListing],
+        applications,
+        "landlord-1",
+      ),
+    ).toBe(2);
+  });
+
+  it("excludes accepted/declined/info_requested applications", () => {
+    const applications: Application[] = [
+      makeApplication({ id: "a1", listingId: "mine", status: "accepted" }),
+      makeApplication({ id: "a2", listingId: "mine", status: "declined" }),
+      makeApplication({
+        id: "a3",
+        listingId: "mine",
+        status: "info_requested",
+      }),
+    ];
+    expect(
+      landlordAwaitingReplyCount(
+        [myListing, otherListing],
+        applications,
+        "landlord-1",
+      ),
+    ).toBe(0);
+  });
+
+  it("excludes applications on listings owned by a different landlord", () => {
+    const applications: Application[] = [
+      makeApplication({
+        id: "a1",
+        listingId: "not-mine",
+        status: "submitted",
+      }),
+    ];
+    expect(
+      landlordAwaitingReplyCount(
+        [myListing, otherListing],
+        applications,
+        "landlord-1",
+      ),
+    ).toBe(0);
   });
 });
 

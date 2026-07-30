@@ -13,17 +13,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHydrated } from "@/hooks/use-hydrated";
-import { isDecidedVerification } from "@/lib/admin";
+import {
+  isDecidedVerification,
+  openReportCount,
+  pendingListingCount,
+  pendingVerificationCount,
+} from "@/lib/admin";
 import { formatDate } from "@/lib/format";
 import { useHectaStore } from "@/lib/store";
 import type { Listing, ListingStatus, VerificationStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-const ACTIONABLE_VERIFICATION_STATUSES = new Set([
-  "submitted",
-  "under_review",
-  "info_requested",
-]);
 
 const RECENT_DECISIONS_LIMIT = 5;
 
@@ -95,22 +94,12 @@ export function AdminOverview() {
     return <AdminOverviewSkeleton />;
   }
 
-  const pendingVerificationCount = verifications.filter((verification) =>
-    ACTIONABLE_VERIFICATION_STATUSES.has(verification.status),
-  ).length;
-  const pendingListingCount = listings.filter(
-    (listing) => listing.status === "pending_review",
-  ).length;
-  const openReportCount = reports.filter(
-    (report) => report.status === "open",
-  ).length;
-
   const queueCards: QueueCardConfig[] = [
     {
       key: "verifications",
       label: "Landlord verifications",
       description: "Ownership docs awaiting a decision.",
-      count: pendingVerificationCount,
+      count: pendingVerificationCount(verifications),
       href: "/admin/verifications",
       icon: <SealCheckIcon aria-hidden className="size-5" />,
     },
@@ -118,7 +107,7 @@ export function AdminOverview() {
       key: "listings",
       label: "Listing approvals",
       description: "New listings waiting to go live.",
-      count: pendingListingCount,
+      count: pendingListingCount(listings),
       href: "/admin/listings",
       icon: <HouseLineIcon aria-hidden className="size-5" />,
     },
@@ -126,7 +115,7 @@ export function AdminOverview() {
       key: "reports",
       label: "Open reports",
       description: "Flags raised by tenants and seekers.",
-      count: openReportCount,
+      count: openReportCount(reports),
       href: "/admin/reports",
       icon: <FlagIcon aria-hidden className="size-5" />,
     },

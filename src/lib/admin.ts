@@ -1,6 +1,7 @@
 import { cityBySlug, stateBySlug } from "@/constants/locations";
 import type {
   Listing,
+  Report,
   VerificationStatus,
   VerificationSubmission,
 } from "@/lib/types";
@@ -146,6 +147,38 @@ const TERMINAL_STATUSES: ReadonlySet<VerificationStatus> = new Set([
   "approved",
   "rejected",
 ]);
+
+/**
+ * Sibling to `isDecidedVerification`: true for every status that still needs
+ * an admin's attention ("submitted", "under_review", "info_requested") —
+ * i.e. everything `TERMINAL_STATUSES` doesn't cover. Backs the "pending
+ * verifications" badge count shown in both the admin nav sidebar and the
+ * admin overview's queue cards, so both stay in lockstep by construction
+ * rather than by two copies of the same status list agreeing.
+ */
+export function isActionableVerification(status: VerificationStatus): boolean {
+  return !TERMINAL_STATUSES.has(status);
+}
+
+/** Count of verification submissions still awaiting an admin decision. */
+export function pendingVerificationCount(
+  verifications: VerificationSubmission[],
+): number {
+  return verifications.filter((verification) =>
+    isActionableVerification(verification.status),
+  ).length;
+}
+
+/** Count of listings sitting in the approval queue. */
+export function pendingListingCount(listings: Listing[]): number {
+  return listings.filter((listing) => listing.status === "pending_review")
+    .length;
+}
+
+/** Count of reports still open (not yet dismissed or actioned). */
+export function openReportCount(reports: Report[]): number {
+  return reports.filter((report) => report.status === "open").length;
+}
 
 /**
  * Queue order for the verification list: submissions still needing

@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useSession } from "@/hooks/use-session";
+import { landlordAwaitingReplyCount } from "@/lib/marketplace";
 import { useHectaStore } from "@/lib/store";
 
 interface StatTile {
@@ -54,11 +55,11 @@ export function OverviewStats() {
   const pendingReviewCount = myListings.filter(
     (listing) => listing.status === "pending_review",
   ).length;
-  const awaitingReplyCount = applications.filter(
-    (application) =>
-      myListingIds.has(application.listingId) &&
-      (application.status === "submitted" || application.status === "viewed"),
-  ).length;
+  const awaitingReplyCount = landlordAwaitingReplyCount(
+    listings,
+    applications,
+    user.id,
+  );
   const savesCount = Object.values(savedByUser).reduce(
     (total, savedIds) =>
       total + savedIds.filter((id) => myListingIds.has(id)).length,

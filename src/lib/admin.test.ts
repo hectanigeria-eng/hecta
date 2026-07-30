@@ -2,12 +2,21 @@ import { describe, expect, it } from "vitest";
 import {
   formatListingAddress,
   hasDuplicateAddress,
+  isActionableVerification,
   maskNinLast4,
   ninFormatValid,
+  openReportCount,
+  pendingListingCount,
+  pendingVerificationCount,
   sortVerificationsForQueue,
   verificationReferenceNumber,
 } from "@/lib/admin";
-import type { Listing, VerificationSubmission } from "@/lib/types";
+import type {
+  Listing,
+  Report,
+  VerificationStatus,
+  VerificationSubmission,
+} from "@/lib/types";
 
 function makeListing(overrides: Partial<Listing> = {}): Listing {
   return {
@@ -44,6 +53,19 @@ function makeListing(overrides: Partial<Listing> = {}): Listing {
     createdAt: "2026-01-01T00:00:00.000Z",
     lastConfirmedAvailableAt: "2026-01-01T00:00:00.000Z",
     reconfirmDueAt: "2026-02-01T00:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function makeReport(overrides: Partial<Report> = {}): Report {
+  return {
+    id: "report-1",
+    targetListingId: "listing-1",
+    reporterId: "user-tunde",
+    category: "scam_listing",
+    reason: "Suspicious",
+    status: "open",
+    createdAt: "2026-07-01T00:00:00.000Z",
     ...overrides,
   };
 }
@@ -184,6 +206,56 @@ describe("verificationReferenceNumber", () => {
       makeVerification({ id: "verification-3" }),
     );
     expect(a).not.toBe(b);
+  });
+});
+
+describe("isActionableVerification", () => {
+  const cases: [VerificationStatus, boolean][] = [
+    ["submitted", true],
+    ["under_review", true],
+    ["info_requested", true],
+    ["approved", false],
+    ["rejected", false],
+  ];
+
+  it.each(cases)("returns %s => %s", (status, expected) => {
+    expect(isActionableVerification(status)).toBe(expected);
+  });
+});
+
+describe("pendingVerificationCount", () => {
+  it("counts only actionable submissions, not decided ones", () => {
+    const verifications = [
+      makeVerification({ id: "v1", status: "submitted" }),
+      makeVerification({ id: "v2", status: "under_review" }),
+      makeVerification({ id: "v3", status: "info_requested" }),
+      makeVerification({ id: "v4", status: "approved" }),
+      makeVerification({ id: "v5", status: "rejected" }),
+    ];
+    expect(pendingVerificationCount(verifications)).toBe(3);
+  });
+});
+
+describe("pendingListingCount", () => {
+  it("counts only listings in pending_review", () => {
+    const listings = [
+      makeListing({ id: "l1", status: "pending_review" }),
+      makeListing({ id: "l2", status: "active" }),
+      makeListing({ id: "l3", status: "pending_review" }),
+    ];
+    expect(pendingListingCount(listings)).toBe(2);
+  });
+});
+
+describe("openReportCount", () => {
+  it("counts only reports with status open", () => {
+    const reports = [
+      makeReport({ id: "r1", status: "open" }),
+      makeReport({ id: "r2", status: "dismissed" }),
+      makeReport({ id: "r3", status: "actioned" }),
+      makeReport({ id: "r4", status: "open" }),
+    ];
+    expect(openReportCount(reports)).toBe(2);
   });
 });
 

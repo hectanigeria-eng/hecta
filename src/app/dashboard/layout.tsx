@@ -13,6 +13,7 @@ import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { PersonaGuard } from "@/features/dashboard/persona-guard";
 import { useSession } from "@/hooks/use-session";
+import { landlordAwaitingReplyCount } from "@/lib/marketplace";
 import { useHectaStore } from "@/lib/store";
 
 // Not a Server Component: the "Applications" badge counts replies pending
@@ -23,16 +24,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const listings = useHectaStore((state) => state.listings);
   const applications = useHectaStore((state) => state.applications);
 
-  const myListingIds = new Set(
-    listings
-      .filter((listing) => listing.landlordId === user.id)
-      .map((listing) => listing.id),
+  const awaitingReplyCount = landlordAwaitingReplyCount(
+    listings,
+    applications,
+    user.id,
   );
-  const awaitingReplyCount = applications.filter(
-    (application) =>
-      myListingIds.has(application.listingId) &&
-      (application.status === "submitted" || application.status === "viewed"),
-  ).length;
 
   const items: DashboardNavItem[] = [
     {
