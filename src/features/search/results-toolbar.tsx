@@ -2,9 +2,9 @@
 
 import {
   MapPinIcon,
-  PencilSimpleIcon,
   RowsIcon,
   SquaresFourIcon,
+  XCircleIcon,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useId } from "react";
@@ -60,6 +60,7 @@ export function ResultsToolbar({
   const sortId = useId();
   const mapId = useId();
 
+  const hasLocation = query.state !== undefined;
   const cityLabel =
     query.state !== undefined && query.city !== undefined
       ? (cityBySlug(query.state, query.city)?.label ?? query.city)
@@ -68,15 +69,18 @@ export function ResultsToolbar({
     query.state !== undefined
       ? (stateBySlug(query.state)?.label ?? query.state)
       : "";
+  const place = [cityLabel, stateLabel].filter(Boolean).join(", ");
   const areaCount = query.areas?.length ?? 0;
 
   function apply(change: Partial<SearchQuery>) {
     router.push(buildSearchUrl(change, query));
   }
 
-  function handleEditLocation() {
-    // Clearing state/city drops the page back to the entry state while intent
-    // and display preferences survive in the URL.
+  function handleClearLocation() {
+    // There's no gate to fall back to anymore — clearing location just drops
+    // the results back to the nationwide set while intent and display
+    // preferences survive in the URL. Editing location itself now happens in
+    // the SearchBar pill above, not here.
     router.push(
       buildSearchUrl(
         { state: undefined, city: undefined, areas: undefined, page: 1 },
@@ -98,23 +102,27 @@ export function ResultsToolbar({
         )}
         <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-ink">
           <MapPinIcon weight="fill" className="size-4 shrink-0" />
-          <span>
-            {cityLabel}, {stateLabel}
-          </span>
-          {areaCount > 0 && (
-            <span>
-              · {areaCount} {areaCount === 1 ? "area" : "areas"}
-            </span>
+          {hasLocation ? (
+            <>
+              <span>{place}</span>
+              {areaCount > 0 && (
+                <span>
+                  · {areaCount} {areaCount === 1 ? "area" : "areas"}
+                </span>
+              )}
+              <Button
+                type="button"
+                variant="link"
+                onClick={handleClearLocation}
+                className="-mx-2 h-11 gap-1 px-2 text-sm font-medium text-primary-600 normal-case tracking-normal"
+              >
+                <XCircleIcon />
+                Clear location
+              </Button>
+            </>
+          ) : (
+            <span>Homes across Nigeria</span>
           )}
-          <Button
-            type="button"
-            variant="link"
-            onClick={handleEditLocation}
-            className="-mx-2 h-11 gap-1 px-2 text-sm font-medium text-primary-600 normal-case tracking-normal"
-          >
-            <PencilSimpleIcon />
-            Edit location
-          </Button>
         </p>
       </div>
 

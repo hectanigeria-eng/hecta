@@ -26,6 +26,7 @@ import {
 import { ListingMap } from "@/features/search/listing-map";
 import { QuickFilters } from "@/features/search/quick-filters";
 import { ResultsToolbar } from "@/features/search/results-toolbar";
+import { SearchBar } from "@/features/search/search-bar";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { filterListings, paginate, sortListings } from "@/lib/marketplace";
 import { toListingFilters } from "@/lib/search-filters";
@@ -127,6 +128,7 @@ export function SearchResults({ query }: SearchResultsProps) {
       aria-labelledby="search-results-heading"
       className="flex flex-col gap-5"
     >
+      <SearchBar query={query} />
       <ResultsToolbar query={query} total={total} hydrated={hydrated} />
       <QuickFilters query={query} />
 
