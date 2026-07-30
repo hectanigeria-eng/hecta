@@ -1,8 +1,14 @@
-// Stable Unsplash photo pool used to build each listing's `images` array.
-// Every URL was verified with `curl -sI "<url>" | head -1` to return HTTP 200
-// before being committed (see task-3-report.md for the full verification log).
-// Grouped as 10 sets of 5 house/apartment exterior + interior photos; a
-// listing picks its set via `LISTING_PHOTO_POOL[index % 10]`.
+// Stable Unsplash photo pool used to build each listing's `images` array, and
+// the fixed gallery a landlord picks from in the new-listing wizard's photo
+// picker. Every URL was verified with `curl -sI "<url>" | head -1` to return
+// HTTP 200 before being committed (see task-3-report.md for the full
+// verification log). Grouped as 10 sets of 5 house/apartment exterior +
+// interior photos; a listing picks its set via `LISTING_PHOTO_POOL[index % 10]`.
+//
+// This is a fixed asset list, not mock domain data — it lives in
+// `src/constants/` (rather than `src/lib/mock/`) so a UI component can import
+// it directly without reaching across the mock-data boundary that `src/lib/`
+// exists to guard.
 export const LISTING_PHOTO_POOL: string[][] = [
   [
     "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=70",

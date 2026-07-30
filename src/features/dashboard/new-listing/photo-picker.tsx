@@ -3,8 +3,8 @@
 import { CheckIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import type { Ref } from "react";
+import { LISTING_PHOTO_POOL } from "@/constants/listing-photos";
 import { MIN_LISTING_IMAGES } from "@/constants/marketplace";
-import { LISTING_PHOTO_POOL } from "@/lib/mock/images";
 import { cn } from "@/lib/utils";
 import { MAX_LISTING_IMAGES } from "./steps";
 

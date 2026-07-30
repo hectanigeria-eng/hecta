@@ -1,3 +1,4 @@
+import { LISTING_PHOTO_POOL } from "@/constants/listing-photos";
 import { AREA_COORDS, NIGERIA_LOCATIONS } from "@/constants/locations";
 import { RECONFIRM_INTERVAL_DAYS } from "@/constants/marketplace";
 import type {
@@ -6,7 +7,6 @@ import type {
   ListingLocation,
   OtherCharge,
 } from "@/lib/types";
-import { LISTING_PHOTO_POOL } from "./images";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const THOUSAND = 1_000;
