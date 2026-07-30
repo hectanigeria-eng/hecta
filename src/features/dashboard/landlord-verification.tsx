@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FieldError } from "@/features/dashboard/new-listing/field-error";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useSession } from "@/hooks/use-session";
+import { maskNinLast4 } from "@/lib/admin";
 import { formatDate } from "@/lib/format";
 import { useHectaStore } from "@/lib/store";
 import type { OwnershipDocType, VerificationSubmission } from "@/lib/types";
@@ -145,13 +146,6 @@ function createEmptyDraft(): VerificationDraft {
     ownership: { ownershipDocType: "c_of_o", documentUploaded: false },
     property: { propertyAddress: "", legitimacyDoc: "none" },
   };
-}
-
-/** Cosmetic mask matching how a submitted NIN is displayed elsewhere in the
- * demo (see `MOCK_VERIFICATIONS`) — only the last 4 digits stay visible. */
-function maskNin(nin: string): string {
-  const visible = nin.slice(-4);
-  return "*".repeat(Math.max(nin.length - visible.length, 0)) + visible;
 }
 
 /**
@@ -973,7 +967,7 @@ function ReviewStep({
       <div className="flex flex-col gap-4 rounded-2xl bg-paper-2 p-4">
         <ReviewRow
           label="NIN"
-          value={maskNin(draft.identity.nin)}
+          value={maskNinLast4(draft.identity.nin)}
           onEdit={() => onEdit(0)}
         />
         <ReviewRow
@@ -1116,7 +1110,7 @@ function VerificationWizard({
     onSubmit({
       landlordId,
       landlordName,
-      nin: maskNin(draft.identity.nin),
+      nin: maskNinLast4(draft.identity.nin),
       propertyAddress: draft.property.propertyAddress,
       ownershipDocType: draft.ownership.ownershipDocType,
       legitimacyDoc: draft.property.legitimacyDoc,
