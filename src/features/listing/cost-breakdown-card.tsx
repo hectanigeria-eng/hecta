@@ -46,10 +46,7 @@ export function CostBreakdownCard({
   return (
     <Card size="sm" className="gap-5 rounded-3xl ring-1 ring-border">
       <CardContent className="flex flex-col gap-1">
-        <h2
-          id="cost-breakdown-heading"
-          className="text-xs font-semibold tracking-wide text-muted-ink uppercase"
-        >
+        <h2 className="text-xs font-semibold tracking-wide text-muted-ink uppercase">
           What it really costs
         </h2>
         <p className="font-heading text-3xl leading-tight font-bold text-ink">

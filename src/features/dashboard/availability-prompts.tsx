@@ -120,7 +120,7 @@ export function AvailabilityPrompts() {
                   <Button
                     size="sm"
                     onClick={() => handleConfirm(listing)}
-                    className="h-9 rounded-full text-xs font-semibold tracking-normal normal-case"
+                    className="h-11 rounded-full text-xs font-semibold tracking-normal normal-case"
                   >
                     Yes, still available
                   </Button>
@@ -128,7 +128,7 @@ export function AvailabilityPrompts() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleTaken(listing)}
-                    className="h-9 rounded-full text-xs font-semibold tracking-normal normal-case"
+                    className="h-11 rounded-full text-xs font-semibold tracking-normal normal-case"
                   >
                     No, it&apos;s taken
                   </Button>
@@ -168,7 +168,7 @@ export function AvailabilityPrompts() {
                 <Button
                   size="sm"
                   onClick={() => handleReactivate(listing)}
-                  className="h-9 shrink-0 rounded-full text-xs font-semibold tracking-normal normal-case"
+                  className="h-11 shrink-0 rounded-full text-xs font-semibold tracking-normal normal-case"
                 >
                   Reactivate
                 </Button>

@@ -52,6 +52,22 @@ describe("parseSearchParams", () => {
     });
   });
 
+  it("falls back to full schema defaults on a malformed moveInDate", () => {
+    const result = parseSearchParams({
+      state: "lagos",
+      moveInDate: "garbage",
+    });
+    expect(result.moveInDate).toBeUndefined();
+    expect(result).toEqual({
+      intent: "rent",
+      verifiedOnly: true,
+      sort: "newest",
+      page: 1,
+      view: "grid",
+      map: true,
+    });
+  });
+
   it("never throws on a garbage query object", () => {
     expect(() =>
       parseSearchParams({ page: "-5", sort: "trending", view: "carousel" }),

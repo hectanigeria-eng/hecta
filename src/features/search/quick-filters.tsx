@@ -129,7 +129,7 @@ export function QuickFilters({ query }: QuickFiltersProps) {
             <Button
               type="button"
               variant="ghost"
-              className="h-10 rounded-full px-3 text-sm font-medium text-muted-ink normal-case tracking-normal"
+              className="h-11 rounded-full px-3 text-sm font-medium text-muted-ink normal-case tracking-normal"
               onClick={() => {
                 setPriceMin("");
                 setPriceMax("");
@@ -140,7 +140,7 @@ export function QuickFilters({ query }: QuickFiltersProps) {
             </Button>
             <Button
               type="button"
-              className="h-10 flex-1 rounded-full text-sm font-semibold normal-case tracking-normal"
+              className="h-11 flex-1 rounded-full text-sm font-semibold normal-case tracking-normal"
               onClick={() =>
                 apply({
                   priceMin: parseAmount(priceMin),
