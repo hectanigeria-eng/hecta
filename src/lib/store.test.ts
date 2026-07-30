@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { RECONFIRM_INTERVAL_DAYS } from "@/constants/marketplace";
-import { useHectaStore } from "@/lib/store";
+import {
+  migratePersistedState,
+  STORE_VERSION,
+  useHectaStore,
+} from "@/lib/store";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -244,6 +248,41 @@ describe("confirmAvailability", () => {
 
     const dueMs = new Date(listing?.reconfirmDueAt ?? "").getTime();
     expect(dueMs - confirmedMs).toBe(RECONFIRM_INTERVAL_DAYS * MS_PER_DAY);
+  });
+});
+
+describe("migratePersistedState", () => {
+  it("passes the persisted payload through unchanged when the version matches", () => {
+    const payload = { activeUserId: "user-tunde", listings: [] };
+    expect(migratePersistedState(payload, STORE_VERSION)).toBe(payload);
+  });
+
+  it("discards an older-versioned payload and falls back to fresh seed data", () => {
+    const stalePayload = {
+      activeUserId: "user-tunde",
+      listings: [], // a stale browser missing seeded listings entirely
+    };
+
+    const migrated = migratePersistedState(stalePayload, STORE_VERSION - 1);
+
+    expect(migrated).not.toBe(stalePayload);
+    // Narrowing `unknown` to check shape; safe because `seedData()` (the
+    // only fallback `migratePersistedState` can return here) always has
+    // these fields.
+    const seeded = migrated as { listings: unknown[]; activeUserId: string };
+    expect(seeded.listings.length).toBeGreaterThan(0);
+    expect(seeded.activeUserId).toBe("anonymous");
+  });
+
+  it("also discards a newer-versioned payload (e.g. a rollback scenario)", () => {
+    const fromTheFuture = { activeUserId: "user-amaka", listings: [] };
+
+    const migrated = migratePersistedState(fromTheFuture, STORE_VERSION + 1);
+
+    // Same shape guarantee as above — fallback is always `seedData()`.
+    const seeded = migrated as { listings: unknown[]; activeUserId: string };
+    expect(seeded.listings.length).toBeGreaterThan(0);
+    expect(seeded.activeUserId).toBe("anonymous");
   });
 });
 

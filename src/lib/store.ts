@@ -32,7 +32,11 @@ import type {
 } from "@/lib/types";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
-const STORE_VERSION = 1;
+// Bumped whenever the seed data's shape changes in a way that would leave
+// older persisted browsers with stale/incomplete state (missing fields,
+// missing rows). Bump this again the next time seed data changes shape.
+// Exported so `migratePersistedState`'s pass-through path is testable.
+export const STORE_VERSION = 2;
 const ANONYMOUS_USER_ID = "anonymous";
 
 export interface HectaState {
@@ -124,6 +128,26 @@ function seedData(): SeedData {
       ...verification,
     })),
   };
+}
+
+/**
+ * Decides what to do with a persisted payload found in `localStorage` at
+ * store-hydration time. Exported (and kept side-effect free) so it can be
+ * unit-tested without touching `localStorage` or React.
+ *
+ * Seed data has changed shape repeatedly across this build — old persisted
+ * state can be missing rows/fields that later features rely on. Rather than
+ * try to patch old shapes forward (and risk silently rendering incomplete
+ * data), any version other than the current one is discarded outright and
+ * replaced with the current seed. A version match is assumed to already be
+ * shape-compatible, so the persisted payload passes through unchanged.
+ */
+export function migratePersistedState(
+  persistedState: unknown,
+  version: number,
+): unknown {
+  if (version === STORE_VERSION) return persistedState;
+  return seedData();
 }
 
 // A storage that never touches `localStorage` when there is no `window`
@@ -398,6 +422,13 @@ export const useHectaStore = create<Store>()(
       name: "hecta-demo",
       version: STORE_VERSION,
       storage: createJSONStorage(() => browserStorage()),
+      // `migrate`'s return type is the full `Store`, but zustand's default
+      // `merge` layers whatever this returns over a freshly-constructed
+      // initial state (which already has every action + the hydration
+      // slice), so returning just the persisted-data shape is sufficient in
+      // practice — the cast only papers over that type/runtime mismatch.
+      migrate: (persistedState, version) =>
+        migratePersistedState(persistedState, version) as Store,
       // Rehydration is triggered manually (see useHydrated) so the very
       // first client render matches the server render byte-for-byte —
       // avoiding a React hydration mismatch.
