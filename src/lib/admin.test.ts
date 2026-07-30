@@ -73,6 +73,18 @@ describe("maskNinLast4", () => {
   it("strips digits out of raw unmasked input too", () => {
     expect(maskNinLast4("12345678901")).toBe("••• •••• 8901");
   });
+
+  it("fully masks rather than exposing every digit of a value shorter than 4 digits", () => {
+    expect(maskNinLast4("12")).toBe("••• •••• ••••");
+  });
+
+  it("fully masks an empty string rather than showing an empty tail", () => {
+    expect(maskNinLast4("")).toBe("••• •••• ••••");
+  });
+
+  it("shows the digits in full when there are exactly 4", () => {
+    expect(maskNinLast4("5678")).toBe("••• •••• 5678");
+  });
 });
 
 describe("ninFormatValid", () => {

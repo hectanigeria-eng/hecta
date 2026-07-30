@@ -370,6 +370,14 @@ describe("paginate", () => {
     expect(outOfRange.totalPages).toBe(3);
     expect(outOfRange.items).toEqual([25]);
   });
+
+  it("clamps a page below 1 (zero or negative) up to page 1", () => {
+    const zero = paginate(items, 0, 12);
+    expect(zero.items).toEqual(items.slice(0, 12));
+
+    const negative = paginate(items, -5, 12);
+    expect(negative.items).toEqual(items.slice(0, 12));
+  });
 });
 
 describe("remainingQuota", () => {
@@ -430,6 +438,33 @@ describe("remainingQuota", () => {
       }),
     ];
     const result = remainingQuota(apps, "applicant-1", "2026-07-29T10:00:00Z");
+    expect(result.day).toBe(DAILY_APPLICATION_LIMIT - 1);
+  });
+
+  it("counts an application at 23:30 UTC on the last day of the month toward next month in WAT", () => {
+    const apps: Application[] = [
+      makeApplication({
+        id: "month-boundary-app",
+        applicantId: "applicant-1",
+        createdAt: "2026-07-31T23:30:00Z", // rolls to 2026-08-01 WAT
+      }),
+    ];
+    const result = remainingQuota(apps, "applicant-1", "2026-08-01T09:00:00Z");
+    expect(result.month).toBe(MONTHLY_APPLICATION_LIMIT - 1);
+  });
+
+  it("counts an application at year-end 23:30 UTC toward next year's January in WAT", () => {
+    const apps: Application[] = [
+      makeApplication({
+        id: "year-boundary-app",
+        applicantId: "applicant-1",
+        createdAt: "2026-12-31T23:30:00Z", // rolls to 2027-01-01 WAT
+      }),
+    ];
+    const result = remainingQuota(apps, "applicant-1", "2027-01-01T09:00:00Z");
+    expect(result.month).toBe(MONTHLY_APPLICATION_LIMIT - 1);
+    // Both the application and "now" fall on the same WAT calendar day
+    // (2027-01-01), so the daily counter is decremented too.
     expect(result.day).toBe(DAILY_APPLICATION_LIMIT - 1);
   });
 });

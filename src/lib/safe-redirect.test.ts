@@ -34,6 +34,14 @@ describe("parseNextPath", () => {
     expect(parseNextPath("/\\evil.com")).toBe(FALLBACK_NEXT_PATH);
   });
 
+  it("falls back on a bare backslash path with no leading slash", () => {
+    expect(parseNextPath("\\evil.com")).toBe(FALLBACK_NEXT_PATH);
+  });
+
+  it("falls back on a percent-encoded //host (%2f%2fevil.com)", () => {
+    expect(parseNextPath("%2f%2fevil.com")).toBe(FALLBACK_NEXT_PATH);
+  });
+
   it("falls back when next is absent", () => {
     expect(parseNextPath(undefined)).toBe(FALLBACK_NEXT_PATH);
     expect(parseNextPath(null)).toBe(FALLBACK_NEXT_PATH);

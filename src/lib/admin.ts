@@ -6,6 +6,7 @@ import type {
 } from "@/lib/types";
 
 const NIN_VISIBLE_DIGITS = 4;
+const FULLY_MASKED_TAIL = "••••";
 
 /**
  * Masks a submission's NIN down to its last 4 digits for display — the
@@ -13,10 +14,19 @@ const NIN_VISIBLE_DIGITS = 4;
  * Works whether the stored value is already partially masked (the seed data
  * stores e.g. "***********1234") or a raw string of digits: only the
  * trailing digits ever reach the screen, everything else is discarded.
+ *
+ * Privacy-critical edge case: for an input with fewer than 4 digits total,
+ * `.slice(-4)` would return every digit there is — i.e. the "masked" output
+ * would render the entire value. Rather than ever expose more than 4
+ * digits under this mask, any input that doesn't have at least 4 digits to
+ * draw from renders fully masked instead.
  */
 export function maskNinLast4(nin: string): string {
   const digits = nin.replace(/\D/g, "");
-  const last4 = digits.slice(-NIN_VISIBLE_DIGITS);
+  const last4 =
+    digits.length >= NIN_VISIBLE_DIGITS
+      ? digits.slice(-NIN_VISIBLE_DIGITS)
+      : FULLY_MASKED_TAIL;
   return `••• •••• ${last4}`;
 }
 

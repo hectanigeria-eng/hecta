@@ -302,6 +302,8 @@ describe("detailsSchema", () => {
       amenities: ["Helipad"],
     });
     expect(result.success).toBe(false);
+    expect(result.error?.issues[0].path).toEqual(["amenities", 0]);
+    expect(result.error?.issues[0].message).toContain("Invalid option");
   });
 });
 

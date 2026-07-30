@@ -155,6 +155,24 @@ function maskNin(nin: string): string {
 }
 
 /**
+ * Decides which submission (if any) backs the "Verified landlord" summary
+ * card. Deliberately searches the whole list for an *approved* submission
+ * rather than taking `submissions[0]` (the most recent) — a landlord can be
+ * re-verifying (e.g. an "info_requested" resubmission) after already having
+ * an approved submission on file, and taking the most recent one would
+ * incorrectly read as "not approved" even though the landlord still is.
+ * This is exactly the status-labelling bug a review caught once already,
+ * hence a pure, separately-tested function instead of inline logic.
+ */
+export function pickApprovedSubmission(
+  isLandlordVerified: boolean,
+  submissions: VerificationSubmission[],
+): VerificationSubmission | undefined {
+  if (!isLandlordVerified) return undefined;
+  return submissions.find((submission) => submission.status === "approved");
+}
+
+/**
  * Trust Layer 1: the landlord verification centre. Approved landlords see a
  * summary of what was reviewed; everyone else sees either the 4-step wizard
  * or — once they've submitted — a status timeline. All three branches read
@@ -181,10 +199,11 @@ export function LandlordVerification() {
   const latest = mySubmissions[0];
 
   if (isLandlordVerified) {
-    const approved = mySubmissions.find(
-      (submission) => submission.status === "approved",
+    return (
+      <ApprovedStatusCard
+        submission={pickApprovedSubmission(isLandlordVerified, mySubmissions)}
+      />
     );
-    return <ApprovedStatusCard submission={approved} />;
   }
 
   if (latest !== undefined) {
