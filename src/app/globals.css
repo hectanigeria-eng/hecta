@@ -49,6 +49,7 @@
   --color-paper: oklch(0.948 0.01 120);
   --color-paper-2: oklch(0.967 0.008 120);
   --color-paper-3: oklch(0.86 0.03 118);
+  --color-canvas: lab(98 0 -0.01);
   --color-deep: oklch(0.235 0.05 151);
   --color-deep-2: oklch(0.19 0.04 153);
   --color-muted-ink: oklch(0.5 0.03 150);

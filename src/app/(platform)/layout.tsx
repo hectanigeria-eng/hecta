@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 // "/platform/search"). No <html>/<body> here; those live in the root layout.
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-dvh bg-paper">
+    <div className="min-h-dvh bg-canvas">
       <PlatformHeader />
       <main>{children}</main>
       <Toaster />

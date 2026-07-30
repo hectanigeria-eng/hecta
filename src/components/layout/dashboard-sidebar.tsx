@@ -1,6 +1,7 @@
 "use client";
 
 import { ListIcon, XIcon } from "@phosphor-icons/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -152,7 +153,7 @@ function NavLink({
 
 /**
  * Generic dashboard shell: a two-tier dark chrome — an icon rail beside a
- * labelled nav column — with the page rendered as a light `bg-paper` panel
+ * labelled nav column — with the page rendered as a light `bg-canvas` panel
  * floating inset on top of it. Collapses to a dark top bar with a `Sheet`
  * drawer below `lg`. Shared between the landlord dashboard and the admin
  * console — only `title` and `items` differ between the two.
@@ -174,11 +175,16 @@ export function DashboardSidebar({
             href={root.href}
             aria-label={`${title} home`}
             className={cn(
-              "flex size-11 items-center justify-center rounded-2xl bg-deep font-heading text-lg font-bold text-secondary-400",
+              "flex size-11 items-center justify-center rounded-2xl bg-canvas",
               DARK_FOCUS_RING,
             )}
           >
-            <span aria-hidden>H</span>
+            <Image
+              src="/assets/logo/hecta-logo-4.svg"
+              alt=""
+              width={30}
+              height={26}
+            />
           </Link>
           <nav
             aria-label={`${root.label} shortcuts`}
@@ -277,7 +283,7 @@ export function DashboardSidebar({
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col p-2 lg:p-3">
-        <div className="flex flex-1 flex-col rounded-3xl bg-paper lg:rounded-4xl">
+        <div className="flex flex-1 flex-col rounded-3xl bg-canvas lg:rounded-4xl">
           <nav
             aria-label="Breadcrumb"
             className="px-4 pt-4 md:px-6 md:pt-5 lg:px-10 lg:pt-8"

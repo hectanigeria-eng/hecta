@@ -5,6 +5,7 @@ import {
   HeartIcon,
   PaperPlaneTiltIcon,
 } from "@phosphor-icons/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -48,11 +49,14 @@ export function PlatformHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:gap-6 md:px-6">
-        <Link
-          href="/search"
-          className="font-heading text-xl font-bold tracking-tight text-ink"
-        >
-          Hecta
+        <Link href="/search" className="flex items-center">
+          <Image
+            src="/assets/logo/hecta-logo-6.svg"
+            alt="Hecta"
+            width={79}
+            height={30}
+            priority
+          />
         </Link>
 
         <nav aria-label="Search intent" className="flex flex-1 justify-center">
