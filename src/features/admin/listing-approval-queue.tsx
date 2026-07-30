@@ -52,7 +52,7 @@ import { CostBreakdownCard } from "@/features/listing/cost-breakdown-card";
 import { SpecChips } from "@/features/listing/spec-chips";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { formatDate, formatNaira, pricePeriodLabel } from "@/lib/format";
-import { isSuspiciousPrice } from "@/lib/marketplace";
+import { comparableMedianPrice, isSuspiciousPrice } from "@/lib/marketplace";
 import { useHectaStore } from "@/lib/store";
 import type { Listing, User } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -101,32 +101,6 @@ function completenessChecks(listing: Listing): CompletenessCheck[] {
           : "No charges listed",
     },
   ];
-}
-
-/**
- * Mirrors `isSuspiciousPrice`'s comparable-set filter (same intent +
- * propertyType + cityLga, excluding the listing itself) purely to *display*
- * the median an admin can weigh against — the suspicious verdict itself
- * always comes from `isSuspiciousPrice`, never recomputed here. Only ever
- * called once that verdict is already true, at which point
- * `isSuspiciousPrice` guarantees at least `MIN_COMPARABLES_FOR_PRICE_CHECK`
- * comps exist, so the empty-set case below is a defensive fallback rather
- * than a path this component expects to hit.
- */
-function comparableMedian(
-  listing: Listing,
-  all: Listing[],
-): number | undefined {
-  const comps = all.filter(
-    (l) =>
-      l.id !== listing.id &&
-      l.intent === listing.intent &&
-      l.propertyType === listing.propertyType &&
-      l.location.cityLga === listing.location.cityLga,
-  );
-  if (comps.length === 0) return undefined;
-  const prices = comps.map((c) => c.price).sort((a, b) => a - b);
-  return prices[Math.floor(prices.length / 2)];
 }
 
 function suspiciousPriceTooltip(
@@ -267,7 +241,7 @@ function ListingRow({
 }: ListingRowProps) {
   const suspicious = isSuspiciousPrice(listing, allListings);
   const median = suspicious
-    ? comparableMedian(listing, allListings)
+    ? comparableMedianPrice(listing, allListings)
     : undefined;
   const checks = completenessChecks(listing);
   const landlordVerified = landlord?.landlordVerified ?? false;

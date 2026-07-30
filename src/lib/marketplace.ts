@@ -233,7 +233,20 @@ export function sortApplicationsByQualification(
   });
 }
 
-export function isSuspiciousPrice(listing: Listing, all: Listing[]): boolean {
+/**
+ * Median price of `listing`'s comparable set — same intent, property type,
+ * and city/LGA, excluding the listing itself. Returns `undefined` when there
+ * are fewer than `MIN_COMPARABLES_FOR_PRICE_CHECK` comparables, the same
+ * guard `isSuspiciousPrice` (below) applies, so this is the single place
+ * that decides whether a comparable set is large enough to trust — nothing
+ * else should re-derive that threshold. Used both to decide suspiciousness
+ * and, in the admin approval queue, to display the median a reviewer can
+ * weigh a flagged listing against.
+ */
+export function comparableMedianPrice(
+  listing: Listing,
+  all: Listing[],
+): number | undefined {
   const comps = all.filter(
     (l) =>
       l.id !== listing.id &&
@@ -241,9 +254,14 @@ export function isSuspiciousPrice(listing: Listing, all: Listing[]): boolean {
       l.propertyType === listing.propertyType &&
       l.location.cityLga === listing.location.cityLga,
   );
-  if (comps.length < MIN_COMPARABLES_FOR_PRICE_CHECK) return false;
+  if (comps.length < MIN_COMPARABLES_FOR_PRICE_CHECK) return undefined;
   const prices = comps.map((c) => c.price).sort((a, b) => a - b);
-  const median = prices[Math.floor(prices.length / 2)];
+  return prices[Math.floor(prices.length / 2)];
+}
+
+export function isSuspiciousPrice(listing: Listing, all: Listing[]): boolean {
+  const median = comparableMedianPrice(listing, all);
+  if (median === undefined) return false;
   return (
     listing.price > median * SUSPICIOUS_PRICE_HIGH_RATIO ||
     listing.price < median * SUSPICIOUS_PRICE_LOW_RATIO

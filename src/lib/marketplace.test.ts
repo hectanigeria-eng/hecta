@@ -5,6 +5,7 @@ import {
   MONTHLY_APPLICATION_LIMIT,
 } from "@/constants/marketplace";
 import {
+  comparableMedianPrice,
   costBreakdown,
   filterListings,
   isReconfirmDue,
@@ -633,6 +634,73 @@ describe("isSuspiciousPrice", () => {
       ...comparableProps,
     });
     expect(isSuspiciousPrice(target, [target, ...comps])).toBe(false);
+  });
+});
+
+describe("comparableMedianPrice", () => {
+  const comparableProps = {
+    intent: "rent" as const,
+    propertyType: "apartment" as const,
+    location: {
+      state: "lagos",
+      cityLga: "yaba",
+      area: "akoka",
+      geoPoint: { lat: 6.51, lng: 3.38 },
+    },
+  };
+
+  it("returns undefined when fewer than MIN_COMPARABLES_FOR_PRICE_CHECK comparables exist", () => {
+    const target = makeListing({
+      id: "target",
+      price: 1_000_000,
+      ...comparableProps,
+    });
+    const comps = [
+      makeListing({ id: "c1", price: 1_200_000, ...comparableProps }),
+      makeListing({ id: "c2", price: 1_400_000, ...comparableProps }),
+    ];
+    expect(comparableMedianPrice(target, [target, ...comps])).toBeUndefined();
+  });
+
+  it("returns the median price of the comparable set once the threshold is met", () => {
+    const target = makeListing({
+      id: "target",
+      price: 5_000_000,
+      ...comparableProps,
+    });
+    const comps = [
+      makeListing({ id: "c1", price: 1_000_000, ...comparableProps }),
+      makeListing({ id: "c2", price: 1_500_000, ...comparableProps }),
+      makeListing({ id: "c3", price: 2_000_000, ...comparableProps }),
+    ];
+    expect(comparableMedianPrice(target, [target, ...comps])).toBe(1_500_000);
+  });
+
+  it("excludes the listing itself and non-matching intent/type/city from the comparable set", () => {
+    const target = makeListing({
+      id: "target",
+      price: 5_000_000,
+      ...comparableProps,
+    });
+    const wrongCity = makeListing({
+      id: "wrong-city",
+      price: 9_000_000,
+      ...comparableProps,
+      location: {
+        state: "lagos",
+        cityLga: "eti-osa",
+        area: "lekki",
+        geoPoint: { lat: 6.45, lng: 3.5 },
+      },
+    });
+    const comps = [
+      makeListing({ id: "c1", price: 1_000_000, ...comparableProps }),
+      makeListing({ id: "c2", price: 1_500_000, ...comparableProps }),
+      makeListing({ id: "c3", price: 2_000_000, ...comparableProps }),
+    ];
+    expect(comparableMedianPrice(target, [target, wrongCity, ...comps])).toBe(
+      1_500_000,
+    );
   });
 });
 
