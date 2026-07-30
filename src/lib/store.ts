@@ -369,14 +369,18 @@ export const useHectaStore = create<Store>()(
         });
       },
 
-      // `note` has no home on the Listing type in this prototype (Listing
-      // carries no reviewer-note field) — it's accepted for interface parity
-      // with reviewVerification but intentionally not persisted anywhere.
-      reviewListing: (listingId, approve, _note) =>
+      reviewListing: (listingId, approve, note) =>
         set((state) => ({
           listings: state.listings.map((listing) =>
             listing.id === listingId
-              ? { ...listing, status: approve ? "active" : "rejected" }
+              ? {
+                  ...listing,
+                  status: approve ? "active" : "rejected",
+                  // Approving clears any earlier rejection note (it no
+                  // longer describes the listing's current state); rejecting
+                  // records the reason so the landlord knows what to fix.
+                  reviewNote: approve ? undefined : note,
+                }
               : listing,
           ),
         })),

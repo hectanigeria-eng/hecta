@@ -1,6 +1,10 @@
 "use client";
 
-import { DotsThreeVerticalIcon, HouseLineIcon } from "@phosphor-icons/react";
+import {
+  DotsThreeVerticalIcon,
+  HouseLineIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -145,9 +149,12 @@ export function MyListingsTable() {
                             className="object-cover"
                           />
                         </div>
-                        <span className="max-w-64 truncate text-sm font-semibold whitespace-normal text-ink">
-                          {listing.title}
-                        </span>
+                        <div className="flex min-w-0 flex-col gap-1">
+                          <span className="max-w-64 truncate text-sm font-semibold whitespace-normal text-ink">
+                            {listing.title}
+                          </span>
+                          <RejectionNote listing={listing} />
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -196,8 +203,9 @@ export function MyListingsTable() {
                       <p className="truncate text-sm font-semibold text-ink">
                         {listing.title}
                       </p>
-                      <div className="mt-1.5">
+                      <div className="mt-1.5 flex flex-col gap-1.5">
                         <ListingStatusChip status={listing.status} />
+                        <RejectionNote listing={listing} />
                       </div>
                       <p className="mt-1.5 text-sm font-semibold text-ink">
                         {formatNaira(listing.price)}
@@ -224,6 +232,28 @@ export function MyListingsTable() {
         </>
       )}
     </div>
+  );
+}
+
+/**
+ * The admin's reason for rejecting a listing (`Listing.reviewNote`, set by
+ * `reviewListing(id, false, note)`) — the whole point of storing it is so
+ * the landlord can see what to fix, so it's shown right under the title
+ * rather than buried behind an action menu.
+ */
+function RejectionNote({ listing }: { listing: Listing }) {
+  if (listing.status !== "rejected" || listing.reviewNote === undefined) {
+    return null;
+  }
+  return (
+    <p className="flex items-start gap-1.5 text-xs text-destructive">
+      <WarningCircleIcon
+        weight="fill"
+        aria-hidden
+        className="mt-0.5 size-3.5 shrink-0"
+      />
+      <span>{listing.reviewNote}</span>
+    </p>
   );
 }
 

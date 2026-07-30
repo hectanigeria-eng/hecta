@@ -54,6 +54,32 @@ describe("reviewListing", () => {
       .listings.find((l) => l.id === "listing-31");
     expect(listing?.status).toBe("rejected");
   });
+
+  it("persists the reason as reviewNote on rejection", () => {
+    useHectaStore
+      .getState()
+      .reviewListing(
+        "listing-31",
+        false,
+        "Price is far above comparable Yaba flats — please justify or lower it.",
+      );
+    const listing = useHectaStore
+      .getState()
+      .listings.find((l) => l.id === "listing-31");
+    expect(listing?.reviewNote).toBe(
+      "Price is far above comparable Yaba flats — please justify or lower it.",
+    );
+  });
+
+  it("clears any prior reviewNote on approval", () => {
+    useHectaStore.getState().reviewListing("listing-31", false, "Overpriced.");
+    useHectaStore.getState().reviewListing("listing-31", true);
+    const listing = useHectaStore
+      .getState()
+      .listings.find((l) => l.id === "listing-31");
+    expect(listing?.status).toBe("active");
+    expect(listing?.reviewNote).toBeUndefined();
+  });
 });
 
 describe("submitReport", () => {

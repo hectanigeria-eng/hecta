@@ -73,6 +73,7 @@ export interface Listing {
   createdAt: string; // ISO
   lastConfirmedAvailableAt: string; // ISO
   reconfirmDueAt: string; // ISO — drives "Still available?" prompt
+  reviewNote?: string; // set by reviewListing on rejection — surfaced to the landlord
 }
 
 export type PersonaId = "anonymous" | "tenant" | "landlord" | "admin";
