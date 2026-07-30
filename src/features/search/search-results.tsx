@@ -127,7 +127,7 @@ export function SearchResults({ query }: SearchResultsProps) {
       aria-labelledby="search-results-heading"
       className="flex flex-col gap-5"
     >
-      <ResultsToolbar query={query} total={hydrated ? total : 0} />
+      <ResultsToolbar query={query} total={total} hydrated={hydrated} />
       <QuickFilters query={query} />
 
       <div

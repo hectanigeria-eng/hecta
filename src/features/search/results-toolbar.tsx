@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cityBySlug, stateBySlug } from "@/constants/locations";
@@ -47,9 +48,14 @@ function toView(value: string): SearchQuery["view"] {
 interface ResultsToolbarProps {
   query: SearchQuery;
   total: number;
+  hydrated: boolean;
 }
 
-export function ResultsToolbar({ query, total }: ResultsToolbarProps) {
+export function ResultsToolbar({
+  query,
+  total,
+  hydrated,
+}: ResultsToolbarProps) {
   const router = useRouter();
   const sortId = useId();
   const mapId = useId();
@@ -82,10 +88,14 @@ export function ResultsToolbar({ query, total }: ResultsToolbarProps) {
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div className="min-w-0">
-        <h2 className="font-heading text-xl font-bold text-ink md:text-2xl">
-          {total} {total === 1 ? "home" : "homes"}
-          {query.intent === "rent" ? " to rent" : " for sale"}
-        </h2>
+        {hydrated ? (
+          <h2 className="font-heading text-xl font-bold text-ink md:text-2xl">
+            {total} {total === 1 ? "home" : "homes"}
+            {query.intent === "rent" ? " to rent" : " for sale"}
+          </h2>
+        ) : (
+          <Skeleton className="h-7 w-48 rounded-md md:h-8" aria-hidden />
+        )}
         <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-ink">
           <MapPinIcon weight="fill" className="size-4 shrink-0" />
           <span>
