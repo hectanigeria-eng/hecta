@@ -31,6 +31,7 @@ export function ChatView({
   const sendMessage = useHectaStore((state) => state.sendMessage);
   const [draft, setDraft] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to the newest message both when a (different) thread is
   // opened and whenever the message count grows (including our own sends).
@@ -38,6 +39,20 @@ export function ChatView({
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
   }, [summary.thread.id, messages.length]);
+
+  // The log's height is decided by the pane above it, which sizes itself from
+  // the live layout *after* this component's effects run (parent effects run
+  // last) and again on resize or an on-screen keyboard. Re-pin to the newest
+  // message whenever that height changes, so it never ends up half-scrolled.
+  useEffect(() => {
+    const log = logRef.current;
+    if (log === null) return;
+    const observer = new ResizeObserver(() => {
+      log.scrollTop = log.scrollHeight;
+    });
+    observer.observe(log);
+    return () => observer.disconnect();
+  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -93,9 +108,10 @@ export function ChatView({
       </header>
 
       <div
+        ref={logRef}
         role="log"
         aria-live="polite"
-        className="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-4"
+        className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-4 py-4"
       >
         {messages.map((message) => {
           const isOwn = message.senderId === activeUserId;

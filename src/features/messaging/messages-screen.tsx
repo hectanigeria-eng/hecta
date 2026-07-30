@@ -2,7 +2,7 @@
 
 import { ChatCircleDotsIcon } from "@phosphor-icons/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { type RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChatView } from "@/features/messaging/chat-view";
 import { ThreadList } from "@/features/messaging/thread-list";
@@ -13,6 +13,72 @@ import type { ChatMessage, Listing, MessageThread } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export type MessagingRole = "seeker" | "landlord";
+
+/** Tailwind's `md` — where the layout switches to the two-pane desktop view. */
+const DESKTOP_MEDIA_QUERY = "(min-width: 48rem)";
+/** Designed pane height from `md` up; on phones the pane fills what is left. */
+const DESKTOP_PANE_HEIGHT_PX = 600;
+/** Below this a thread is unusable, so let the page scroll instead of shrinking further. */
+const MIN_PANE_HEIGHT_PX = 320;
+
+/** Padding, border and margin an ancestor keeps *below* its content. */
+function bottomInset(element: HTMLElement): number {
+  const style = window.getComputedStyle(element);
+  return (
+    (Number.parseFloat(style.paddingBottom) || 0) +
+    (Number.parseFloat(style.borderBottomWidth) || 0) +
+    (Number.parseFloat(style.marginBottom) || 0)
+  );
+}
+
+/**
+ * The height the split pane may occupy, measured from the live layout: its own
+ * top edge down to the bottom of the viewport, minus whatever padding, border
+ * and margin its ancestors keep below it.
+ *
+ * Measured rather than derived from a hardcoded chrome budget: this screen
+ * renders inside two different, responsive shells (the landlord dashboard's
+ * floating panel and the seeker's platform header), so any single
+ * `100dvh - <constant>` guess drifts out of date and pushes the compose form
+ * below the fold — the pane clips its own overflow, so that form becomes
+ * unreachable rather than merely off-screen.
+ */
+function usePaneHeight(
+  ref: RefObject<HTMLElement | null>,
+  enabled: boolean,
+): number | undefined {
+  const [height, setHeight] = useState<number>();
+
+  useEffect(() => {
+    const pane = ref.current;
+    if (!enabled || pane === null) return;
+
+    const measure = (): void => {
+      // Document-space offset, so measuring on a scrolled page can only ever
+      // under-estimate the space available (safe) instead of over-estimating.
+      const top = pane.getBoundingClientRect().top + window.scrollY;
+      let insetBelow = 0;
+      for (
+        let ancestor = pane.parentElement;
+        ancestor !== null;
+        ancestor = ancestor.parentElement
+      ) {
+        insetBelow += bottomInset(ancestor);
+      }
+      const available = window.innerHeight - top - insetBelow;
+      const target = window.matchMedia(DESKTOP_MEDIA_QUERY).matches
+        ? Math.min(DESKTOP_PANE_HEIGHT_PX, available)
+        : available;
+      setHeight(Math.max(MIN_PANE_HEIGHT_PX, target));
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [ref, enabled]);
+
+  return height;
+}
 
 /**
  * A thread enriched with everything both the list row and the chat header
@@ -102,6 +168,9 @@ export function MessagesScreen({ viewerRole }: MessagesScreenProps) {
     (summary) => summary.thread.id === requestedThreadId,
   );
 
+  const paneRef = useRef<HTMLDivElement>(null);
+  const paneHeight = usePaneHeight(paneRef, summaries.length > 0);
+
   function handleBack() {
     router.push(pathname);
   }
@@ -136,10 +205,16 @@ export function MessagesScreen({ viewerRole }: MessagesScreenProps) {
           );
 
   return (
-    <div className="grid h-[calc(100dvh-13rem)] overflow-hidden rounded-3xl ring-1 ring-border md:h-[600px] md:grid-cols-[320px_1fr]">
+    <div
+      ref={paneRef}
+      // A measured pixel height has no utility equivalent; the `h-*` classes
+      // below are the fallback for the single frame before it is measured.
+      style={paneHeight === undefined ? undefined : { height: paneHeight }}
+      className="grid h-[60dvh] overflow-hidden rounded-3xl ring-1 ring-border md:h-150 md:grid-cols-[320px_1fr]"
+    >
       <div
         className={cn(
-          "h-full border-border md:block md:border-r",
+          "h-full min-h-0 border-border md:block md:border-r",
           activeSummary !== undefined ? "hidden" : "block",
         )}
       >
@@ -151,7 +226,7 @@ export function MessagesScreen({ viewerRole }: MessagesScreenProps) {
       </div>
       <div
         className={cn(
-          "h-full md:flex md:flex-col",
+          "h-full min-h-0 md:flex md:flex-col",
           activeSummary !== undefined ? "flex flex-col" : "hidden",
         )}
       >
