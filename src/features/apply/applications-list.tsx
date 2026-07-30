@@ -134,7 +134,7 @@ function ApplicationRow({ application, listing, thread }: ApplicationRowProps) {
             asChild
             variant="outline"
             size="sm"
-            className="h-9 gap-1 rounded-full text-xs font-semibold tracking-normal normal-case"
+            className="h-11 gap-1 rounded-full text-xs font-semibold tracking-normal normal-case"
           >
             <Link href={`/messages?thread=${thread.id}`}>Message landlord</Link>
           </Button>
